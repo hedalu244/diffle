@@ -49,3 +49,53 @@ function diffle(answer, guess) {
     console.log(state.join(""));
     return state;
 }
+function assure(a, b) {
+    if (a instanceof b)
+        return a;
+    throw new TypeError(`${a} is not ${b.name}.`);
+}
+const inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
+const board = assure(document.getElementById("board"), HTMLDivElement);
+let answer = "education";
+let guess = "";
+function input_letter(letter) {
+    if (!/^[a-z]$/.test(letter))
+        throw new Error("invalid input");
+    const letter_element = document.createElement("div");
+    letter_element.className = "letter";
+    letter_element.textContent = letter;
+    inputRow.appendChild(letter_element);
+    guess += letter;
+    console.log(guess);
+}
+function input_backspace() {
+    if (inputRow.lastElementChild)
+        inputRow.removeChild(inputRow.lastElementChild);
+    guess = guess.substring(0, guess.length - 1);
+    console.log(guess);
+}
+function enter() {
+    const row = document.createElement("div");
+    row.className = "guess";
+    const result = diffle(answer, guess);
+    Array.from(guess).forEach((letter, i) => {
+        const letter_element = document.createElement("div");
+        letter_element.className = "letter";
+        letter_element.textContent = letter;
+        letter_element.classList.add(["absent", "present", "head", "tail"][result[i]]);
+        row.appendChild(letter_element);
+        result[i];
+    });
+    board.insertBefore(row, inputRow);
+    guess = "";
+    inputRow.innerHTML = "";
+}
+document.addEventListener("keydown", (ev) => {
+    console.log(ev.key);
+    if (ev.key == "Backspace")
+        input_backspace();
+    if (ev.key == "Enter")
+        enter();
+    if (/^[A-Za-z]$/.test(ev.key))
+        input_letter(ev.key.toLowerCase());
+});

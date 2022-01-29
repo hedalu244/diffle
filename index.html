@@ -1,13 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diffle</title>
-    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+    <div class="wrapper">
+        <header>
+            <h1 class="title">DIFFLE</h1>
+        </header>
+        <div id="board">
+            <div id="input_row" class="guess"></div>
+        </div>
+        <div id="keyboard">
+            <div>
+                <button onclick="input_letter('q')">Q</button>
+                <button onclick="input_letter('w')">W</button>
+                <button onclick="input_letter('e')">E</button>
+                <button onclick="input_letter('r')">R</button>
+                <button onclick="input_letter('t')">T</button>
+                <button onclick="input_letter('y')">Y</button>
+                <button onclick="input_letter('u')">U</button>
+                <button onclick="input_letter('i')">I</button>
+                <button onclick="input_letter('o')">O</button>
+                <button onclick="input_letter('p')">P</button>
+            </div>
+            <div>
+                <span class="spacer"></span>
+                <button onclick="input_letter('a')">A</button>
+                <button onclick="input_letter('s')">S</button>
+                <button onclick="input_letter('d')">D</button>
+                <button onclick="input_letter('f')">F</button>
+                <button onclick="input_letter('g')">G</button>
+                <button onclick="input_letter('h')">H</button>
+                <button onclick="input_letter('j')">J</button>
+                <button onclick="input_letter('k')">K</button>
+                <button onclick="input_letter('l')">L</button>
+                <span class="spacer"></span>
+            </div>
+            <div>
+                <button onclick="enter()">Enter</button>
+                <button onclick="input_letter('z')">Z</button>
+                <button onclick="input_letter('x')">X</button>
+                <button onclick="input_letter('c')">C</button>
+                <button onclick="input_letter('v')">V</button>
+                <button onclick="input_letter('b')">B</button>
+                <button onclick="input_letter('n')">N</button>
+                <button onclick="input_letter('m')">M</button>
+                <button onclick="input_backspace()">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <path fill="var(--color-tone-1)" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path>
+                  </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="main.js"></script>
 </body>
+
 </html>
