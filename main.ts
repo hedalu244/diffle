@@ -1,3 +1,5 @@
+/// <reference path="data.ts">
+
 function diffle(answer: string, guess: string) {
     const table = Array.from({ length: answer.length + 1 }, () => Array.from({ length: guess.length + 1 }, () => ({ cost: 0, operation: "insert" as "insert" | "remove" | "accept" })));
 
@@ -55,11 +57,12 @@ function assure<T extends new (...args: any[]) => any>(a: any, b: T): InstanceTy
 
 const inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
 const board = assure(document.getElementById("board"), HTMLDivElement);
-let answer = "education";
+let answer = answers[Math.floor(Math.random() * answers.length)];
 let guess = "";
 
 function input_letter(letter: string) {
     if (!/^[a-z]$/.test(letter)) throw new Error("invalid input");
+    if (10 <= guess.length) return;
 
     const letter_element = document.createElement("div");
     letter_element.className = "letter";
@@ -74,6 +77,11 @@ function input_backspace() {
     console.log(guess);
 }
 function enter() {
+    if (!arrowed.includes(guess)) {
+        alert("not in word list");
+        return;
+    }
+
     const row = document.createElement("div");
     row.className = "guess";
 
@@ -86,13 +94,15 @@ function enter() {
         letter_element.classList.add(["absent", "present", "head", "tail"][result[i]]);
 
         row.appendChild(letter_element);
-        
+
         result[i];
     });
 
     board.insertBefore(row, inputRow);
     guess = "";
     inputRow.innerHTML = "";
+
+    if(guess == answer) alert("excellent!");
 }
 
 document.addEventListener("keydown", (ev) => {
