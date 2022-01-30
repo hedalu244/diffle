@@ -92,6 +92,7 @@ const inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
 const board = assure(document.getElementById("board"), HTMLDivElement);
 let answer = answers[Math.floor(Math.random() * answers.length)];
 let guess = "";
+let count = 0;
 
 function input_letter(letter: string) {
     if (!/^[a-z]$/.test(letter)) throw new Error("invalid input");
@@ -102,11 +103,19 @@ function input_letter(letter: string) {
     letter_element.textContent = letter;
     inputRow.appendChild(letter_element);
     guess += letter;
+    count++;
+
+    inputRow.classList.remove("empty");
     //console.log(guess);
 }
 function input_backspace() {
     if (inputRow.lastElementChild) inputRow.removeChild(inputRow.lastElementChild);
-    guess = guess.substring(0, guess.length - 1);
+    if (guess !== "") {
+        guess = guess.substring(0, guess.length - 1);
+        count--;
+    }
+    if (guess == "")
+        inputRow.classList.add("empty");
     console.log(guess);
 }
 function enter() {
@@ -127,6 +136,8 @@ function enter() {
         letter_element.classList.add(["absent", "present", "head", "tail"][result.pattern[i]]);
 
         const keyboard_button = assure(document.getElementById("keyboard_" + letter), HTMLButtonElement);
+        if (result.pattern[i] == 0)
+            keyboard_button.className = "absent";
         if (result.pattern[i] == 2 || result.pattern[i] == 3)
             keyboard_button.className = "correct";
         if (result.pattern[i] == 1 && keyboard_button.className !== "correct")
@@ -141,6 +152,7 @@ function enter() {
     board.insertBefore(row, inputRow);
     guess = "";
     inputRow.innerHTML = "";
+    inputRow.classList.add("empty");
 
     if (guess == answer) alert("excellent!");
 }

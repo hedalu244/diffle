@@ -76,6 +76,7 @@ const inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
 const board = assure(document.getElementById("board"), HTMLDivElement);
 let answer = answers[Math.floor(Math.random() * answers.length)];
 let guess = "";
+let count = 0;
 function input_letter(letter) {
     if (!/^[a-z]$/.test(letter))
         throw new Error("invalid input");
@@ -91,7 +92,10 @@ function input_letter(letter) {
 function input_backspace() {
     if (inputRow.lastElementChild)
         inputRow.removeChild(inputRow.lastElementChild);
-    guess = guess.substring(0, guess.length - 1);
+    if (guess !== "") {
+        guess = guess.substring(0, guess.length - 1);
+        count--;
+    }
     console.log(guess);
 }
 function enter() {
