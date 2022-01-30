@@ -116,10 +116,12 @@ function enter() {
         letter_element.textContent = letter;
         letter_element.classList.add(["absent", "present", "head", "tail"][result.pattern[i]]);
         const keyboard_button = assure(document.getElementById("keyboard_" + letter), HTMLButtonElement);
-        if (result.pattern[i] == 2 || result.pattern[i] == 3)
-            keyboard_button.className = "correct";
+        if (result.pattern[i] == 0)
+            keyboard_button.className = "absent";
         if (result.pattern[i] == 1 && keyboard_button.className !== "correct")
             keyboard_button.className = "present";
+        if (result.pattern[i] == 2 || result.pattern[i] == 3)
+            keyboard_button.className = "correct";
         if (i == 0 && result.start)
             letter_element.classList.add("start");
         if (i == guess.length - 1 && result.end)
@@ -127,11 +129,15 @@ function enter() {
         row.appendChild(letter_element);
     });
     board.insertBefore(row, inputRow);
-    guess = "";
-    inputRow.innerHTML = "";
-    inputRow.classList.add("empty");
-    if (guess == answer)
-        alert("excellent!");
+    if (guess == answer) {
+        inputRow.style.display = "none";
+        setTimeout(() => alert("excellent!"), 0);
+    }
+    else {
+        guess = "";
+        inputRow.innerHTML = "";
+        inputRow.classList.add("empty");
+    }
 }
 document.addEventListener("keydown", (ev) => {
     //console.log(ev.key);
