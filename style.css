@@ -70,6 +70,21 @@ header {
     margin: 1rem 0;
 }
 
+.empty::before {
+    content: "";
+    display: block;
+    width: 4.2rem;
+    height: 4.2rem;
+    border-radius: 50%;
+    border: 1px solid #cacaca;
+    margin: 0 .2rem;
+
+    text-align: center;
+    vertical-align: middle;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
 .letter {
     font-family: 'HK Super Round Bold';
     display: inline-block;

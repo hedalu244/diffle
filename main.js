@@ -87,6 +87,8 @@ function input_letter(letter) {
     letter_element.textContent = letter;
     inputRow.appendChild(letter_element);
     guess += letter;
+    count++;
+    inputRow.classList.remove("empty");
     //console.log(guess);
 }
 function input_backspace() {
@@ -96,6 +98,8 @@ function input_backspace() {
         guess = guess.substring(0, guess.length - 1);
         count--;
     }
+    if (guess == "")
+        inputRow.classList.add("empty");
     console.log(guess);
 }
 function enter() {
@@ -125,6 +129,7 @@ function enter() {
     board.insertBefore(row, inputRow);
     guess = "";
     inputRow.innerHTML = "";
+    inputRow.classList.add("empty");
     if (guess == answer)
         alert("excellent!");
 }
