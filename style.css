@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'HK Super Round Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('HK Super Round Bold'), url('HKSuperRound-Bold.woff') format('woff');
+}
+
 html {
     font-size: min(2vw, 10px);
     color: #1a1a1b;
@@ -31,9 +38,11 @@ header {
 }
 
 .title {
+    font-family: 'HK Super Round Bold';
     font-weight: 700;
     font-size: 3.6rem;
-    letter-spacing: 0.2rem;
+    padding-top: 0.4rem;
+    letter-spacing: 0.4rem;
     text-transform: uppercase;
     text-align: center;
     position: absolute;
@@ -55,10 +64,11 @@ header {
 }
 
 .letter {
+    font-family: 'HK Super Round Bold';
     display: inline-block;
     position: relative;
     font-size: 4rem;
-    line-height: 6rem;
+    line-height: 7rem;
     width: 6rem;
     height: 6rem;
     border-radius: 50%;
@@ -133,10 +143,11 @@ header {
 }
 
 #keyboard button {
-    font-family: inherit;
+    font-family: 'HK Super Round Bold';
     font-weight: bold;
     font-size: 1.5rem;
     height: 5.8rem;
+    line-height: 6rem;
     flex: 1;
     outline: none;
     border: none;
@@ -147,6 +158,12 @@ header {
     margin: 0 0.3rem;
 }
 
+
+#keyboard button#keyboard_backspace {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 #keyboard button.absent {
     background-color: #787c7e;
