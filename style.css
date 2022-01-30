@@ -95,6 +95,16 @@ header {
     border: none;
 }
 
+.letter.start {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.letter.end {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
 .letter.tail::before {
     content: "";
     display: block;

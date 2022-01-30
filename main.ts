@@ -5,6 +5,7 @@ function diffle(answer: string, guess: string) {
 
     for (let i = 0; i < answer.length + 1; i++) table[i][0] = { cost: i, operation: "insert" };
     for (let j = 0; j < guess.length + 1; j++) table[0][j] = { cost: j, operation: "remove" };
+    //table[0][0] = { cost: 0, operation: "accept" };
 
     for (let i = 1; i < answer.length + 1; i++) {
         for (let j = 1; j < guess.length + 1; j++) {
@@ -42,12 +43,16 @@ function diffle(answer: string, guess: string) {
                 break;
         }
     }
+
+    const start = table[1][1].operation == "accept";
+    const end = table[answer.length][guess.length].operation == "accept";
+
     if (accept_count == 1) state = state.map(x => x == 2 ? 1 : x);
 
     console.log(log);
     console.log(guess);
     console.log(state.join(""));
-    return state;
+    return { state, start, end };
 }
 
 function assure<T extends new (...args: any[]) => any>(a: any, b: T): InstanceType<T> {
@@ -91,18 +96,19 @@ function enter() {
         const letter_element = document.createElement("div");
         letter_element.className = "letter";
         letter_element.textContent = letter;
-        letter_element.classList.add(["absent", "present", "head", "tail"][result[i]]);
+        letter_element.classList.add(["absent", "present", "head", "tail"][result.state[i]]);
+
+        if (i == 0 && result.start) letter_element.classList.add("start");
+        if (i == guess.length - 1 && result.end) letter_element.classList.add("end");
 
         row.appendChild(letter_element);
-
-        result[i];
     });
 
     board.insertBefore(row, inputRow);
     guess = "";
     inputRow.innerHTML = "";
 
-    if(guess == answer) alert("excellent!");
+    if (guess == answer) alert("excellent!");
 }
 
 document.addEventListener("keydown", (ev) => {
