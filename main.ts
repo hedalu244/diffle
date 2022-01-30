@@ -43,6 +43,7 @@ function diffle(answer: string, guess: string): DiffleResult {
         const end = path[path.length - 1] == ">";
         const pattern: (0 | 1 | 2 | 3)[] = Array.from({ length: guess.length }, (x, i) => answer.indexOf(guess[i]) == -1 ? 0 : 1);
 
+        let accept_count = 0;
         let score = 0;
         if (start) score += 1;
         if (end) score += 1;
@@ -54,6 +55,7 @@ function diffle(answer: string, guess: string): DiffleResult {
                     pattern[b] = path[i - 1] == ">" ? 3 : 2;
                     a++;
                     b++;
+                    accept_count++;
                     if (path[i - 1] == ">")
                         score += 3;
                     break;
@@ -65,6 +67,8 @@ function diffle(answer: string, guess: string): DiffleResult {
                     break;
             }
         }
+        if (accept_count == 1 && !start && !end)
+            pattern[pattern.indexOf(2)] = 1;
 
         if (best_score < score) {
             best_score = score;
