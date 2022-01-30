@@ -103,6 +103,11 @@ function enter() {
         letter_element.className = "letter";
         letter_element.textContent = letter;
         letter_element.classList.add(["absent", "present", "head", "tail"][result.pattern[i]]);
+        const keyboard_button = assure(document.getElementById("keyboard_" + letter), HTMLButtonElement);
+        if (result.pattern[i] == 2 || result.pattern[i] == 3)
+            keyboard_button.className = "correct";
+        if (result.pattern[i] == 1 && keyboard_button.className !== "correct")
+            keyboard_button.className = "present";
         if (i == 0 && result.start)
             letter_element.classList.add("start");
         if (i == guess.length - 1 && result.end)
@@ -123,4 +128,8 @@ document.addEventListener("keydown", (ev) => {
         enter();
     if (/^[A-Za-z]$/.test(ev.key))
         input_letter(ev.key.toLowerCase());
+});
+Array.from("qwertyuiopasdfghjklzxcvbnm").forEach(letter => {
+    const keyboard_button = assure(document.getElementById("keyboard_" + letter), HTMLButtonElement);
+    keyboard_button.addEventListener("click", () => input_letter(letter));
 });
