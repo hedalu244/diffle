@@ -15,26 +15,33 @@ body {
     background-color: white;
     min-height: 100vh;
     margin: 0;
+    font-size: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: row nowrap;
+    text-align: center;
 }
 
 .wrapper {
+    position: relative;
     width: 50rem;
     min-height: 100vh;
     margin: auto;
     display: flex;
+    overflow: hidden;
     flex-flow: column nowrap;
+    align-items: center;
 }
 
 header {
     display: flex;
-    justify-content: space-between;
+    flex-flow: row nowrap;
+    justify-content: center;
     align-items: center;
     height: 5rem;
     border-bottom: 1px solid #d3d6da;
+    width: 50rem;
 }
 
 .title {
@@ -45,7 +52,6 @@ header {
     letter-spacing: 0.4rem;
     text-transform: uppercase;
     text-align: center;
-    position: absolute;
     left: 0;
     right: 0;
     pointer-events: none;
@@ -61,19 +67,20 @@ header {
 .guess {
     text-align: center;
     white-space: nowrap;
+    margin: 1rem 0;
 }
 
 .letter {
     font-family: 'HK Super Round Bold';
     display: inline-block;
     position: relative;
-    font-size: 4rem;
-    line-height: 7rem;
-    width: 6rem;
-    height: 6rem;
+    font-size: 2.3rem;
+    line-height: 4.6rem;
+    width: 4.2rem;
+    height: 4.2rem;
     border-radius: 50%;
     border: 1px solid #cacaca;
-    margin: 1rem .2rem;
+    margin: 0 .2rem;
 
     text-align: center;
     vertical-align: middle;
@@ -128,7 +135,9 @@ header {
     transform: translate(-50%, 0);
 }
 
+
 #keyboard {
+    width: 50rem;
     display: flex;
     flex-flow: column nowrap;
     user-select: none;
@@ -182,4 +191,35 @@ header {
 
 #keyboard .spacer {
     flex: 0.5;
+}
+
+
+#help {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-color: white;
+    z-index: 0;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    overflow: scroll;
+}
+
+input[type=radio]:checked+#help {
+    opacity: 1;
+    top: 0;
+}
+
+.example {
+    margin: 1.5rem;
+}
+
+.example .guess {
+    margin: 0;
+}
+
+.example p {
+    margin: .5rem;
 }

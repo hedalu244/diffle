@@ -12,6 +12,13 @@
 <body>
     <div class="wrapper">
         <header>
+            <label for="open_help" style="position: absolute; left: 0">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <path fill="#878a8c"
+                        d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z">
+                    </path>
+                </svg>
+            </label>
             <h1 class="title">DIFFLE</h1>
         </header>
         <div id="board">
@@ -54,12 +61,106 @@
                 <button id="keyboard_m">M</button>
                 <button id="keyboard_backspace">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path fill="var(--color-tone-1)" d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z"></path>
-                  </svg>
+                        <path fill="#1a1a1b"
+                            d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z">
+                        </path>
+                    </svg>
                 </button>
             </div>
         </div>
-    </div>
+
+        <input type="radio" name="open_close_help" id="close_help" style="display: none" checked>
+        <input type="radio" name="open_close_help" id="open_help" style="display: none">
+        <div id="help">
+            <h2>How To Play</h2>
+
+            <p>Tiis game is inspired by Wordle.<br>
+                このゲームは Wordle の派生です。</p>
+
+            <p>Guess the word using as less total letters as possible.<br>
+                出来るだけ少ない文字数で、正解の単語を当ててください</p>
+
+            <p>Each guess must be a valid word. Hit the enter button to submit.<br>
+                それぞれの推測は有効な単語である必要があります。Enter を押すと確定します。</p>
+
+            <p>After each guess, the color of the tiles will change to show how close your guess was to the word.<br>
+                推測するたびにタイルの色が変わり、推測が正解の単語にどれだけ近かったかがわかります。</p>
+
+
+            <h2>Examples</h2>
+            <div class="example">
+                <div class="guess">
+                    <div class="letter absent">s</div>
+                    <div class="letter absent">h</div>
+                    <div class="letter absent">i</div>
+                    <div class="letter absent">r</div>
+                    <div class="letter absent">t</div>
+                </div>
+                <p>Gray letters are not in the word.<br>
+                    灰色の文字は正解の単語に使われていません。</p>
+            </div>
+            <div class="example">
+                <div class="guess">
+                    <div class="letter absent">s</div>
+                    <div class="letter present">m</div>
+                    <div class="letter absent">o</div>
+                    <div class="letter absent">g</div>
+                </div>
+                <p>The letter M is in the word.<br>
+                    M が正解の単語に使われています。</p>
+            </div>
+            <div class="example">
+                <div class="guess">
+                    <div class="letter absent">d</div>
+                    <div class="letter head">e</div>
+                    <div class="letter absent">t</div>
+                    <div class="letter head">a</div>
+                    <div class="letter absent">i</div>
+                    <div class="letter head">l</div>
+                </div>
+                <p>The letters E, A, and L are in the word in this order.<br>
+                    E、A、L はこの順で使われています。</p>
+            </div>
+            <div class="example">
+                <div class="guess">
+                    <div class="letter absent">i</div>
+                    <div class="letter head">m</div>
+                    <div class="letter tail">p</div>
+                    <div class="letter tail">l</div>
+                    <div class="letter absent">y</div>
+                </div>
+                <p>The letter MPL is in the word in a row.<br>
+                    MPL はこの並びで使われています。</p>
+            </div>
+            <div class="example">
+                <div class="guess">
+                    <div class="letter head start">e</div>
+                    <div class="letter absent">d</div>
+                    <div class="letter absent">i</div>
+                    <div class="letter absent">b</div>
+                    <div class="letter head">l</div>
+                    <div class="letter tail end">e</div>
+                </div>
+                <p>The word starts with E and ends with LE.<br>
+                    正解の単語は Eで始まり LE で終わります</p>
+            </div>
+            <div class="example">
+                <div class="guess">
+                    <div class="letter head start">e</div>
+                    <div class="letter tail">x</div>
+                    <div class="letter tail">a</div>
+                    <div class="letter tail">m</div>
+                    <div class="letter tail">p</div>
+                    <div class="letter tail">l</div>
+                    <div class="letter tail end">e</div>
+                </div>
+                <p>This is the word.<br>
+                    これが正解の単語です。</p>
+            </div>
+
+            <label for="close_help">close/閉じる</label>
+        </div>
+
     </div>
     <script src="data.js"></script>
     <script src="main.js"></script>
