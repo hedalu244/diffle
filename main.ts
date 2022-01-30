@@ -152,3 +152,6 @@ Array.from("qwertyuiopasdfghjklzxcvbnm").forEach(letter => {
     const keyboard_button = assure(document.getElementById("keyboard_" + letter), HTMLButtonElement);
     keyboard_button.addEventListener("click", () => input_letter(letter));
 });
+
+assure(document.getElementById("keyboard_enter"), HTMLButtonElement).addEventListener("click", enter);
+assure(document.getElementById("keyboard_backspace"), HTMLButtonElement).addEventListener("click", input_backspace);
