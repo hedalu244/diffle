@@ -93,45 +93,77 @@ function assure<T extends new (...args: any[]) => any>(a: any, b: T): InstanceTy
 
 const $inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
 const $board = assure(document.getElementById("board"), HTMLDivElement);
-let answer = answers[Math.floor(Math.random() * answers.length)];
-let progress: { guess: string, result: DiffleResult; }[] = [];
-let guess = "";
-let count = 0;
+
+interface PlayData {
+    date: string;
+    answer: string;
+    guess: string;
+    history: string[];
+    letter_count: number;
+}
+type Save = { play: PlayData, stat: []; };
+let play: PlayData;
+let stat: [];
+
+function load() {
+    const today = getTodayString();
+
+    const dataString = localStorage.getItem("diffle_save");
+    const data = dataString ? JSON.parse(dataString) as Save : null;
+
+    if (data) stat = data.stat;
+    else stat = [];
+
+    if (data && data.play.date == today) {
+        play = data.play;
+        play.history.forEach(x => guess(x));
+        if (play.history[play.history.length - 1] == play.answer) showReault();
+    }
+    else {
+        play = {
+            date: today,
+            answer: answers[Math.floor(Math.random() * answers.length)],
+            guess: "",
+            history: [],
+            letter_count: 0,
+        };
+    }
+}
+
+function save() {
+    localStorage.setItem("diffle_save", JSON.stringify({ play, stat }));
+}
 
 function input_letter(letter: string) {
     if (!/^[a-z]$/.test(letter)) throw new Error("invalid input");
-    if (10 <= guess.length) return;
+    if (10 <= play.guess.length) return;
 
     const letter_element = document.createElement("div");
     letter_element.className = "letter";
     letter_element.textContent = letter;
     $inputRow.appendChild(letter_element);
-    guess += letter;
-    count++;
-
     $inputRow.classList.remove("empty");
+
+    play.guess += letter;
+    save();
     //console.log(guess);
 }
 function input_backspace() {
     if ($inputRow.lastElementChild) $inputRow.removeChild($inputRow.lastElementChild);
-    if (guess !== "") {
-        guess = guess.substring(0, guess.length - 1);
-        count--;
-    }
-    if (guess == "")
+    if (play.guess !== "")
+        play.guess = play.guess.substring(0, play.guess.length - 1);
+    if (play.guess == "")
         $inputRow.classList.add("empty");
-    console.log(guess);
-}
-function enter() {
-    if (!arrowed.includes(guess)) {
-        alert("not in word list");
-        return;
-    }
 
+    console.log(play.guess);
+    save();
+}
+
+function guess(guess: string) {
     const row = document.createElement("div");
     row.className = "guess";
 
-    const result = diffle(answer, guess);
+    const result = diffle(play.answer, guess);
 
     Array.from(guess).forEach((letter, i) => {
         const letter_element = document.createElement("div");
@@ -153,25 +185,42 @@ function enter() {
         row.appendChild(letter_element);
     });
     $board.insertBefore(row, $inputRow);
-    progress.push({ guess, result });
 
-    if (guess == answer) {
-        $inputRow.style.display = "none";
+    $inputRow.innerHTML = "";
+    $inputRow.classList.add("empty");
+}
+
+function enter() {
+    if (!arrowed.includes(play.guess)) {
+        alert("not in word list");
+        return;
+    }
+
+    guess(play.guess);
+
+    play.letter_count += play.guess.length;
+    play.history.push(play.guess);
+
+    if (play.guess == play.answer) {
         setTimeout(() => alert("excellent!"), 0);
-        assure(document.getElementById("result"), HTMLDivElement).style.display = "";
-        assure(document.getElementById("letters_used"), HTMLDivElement).textContent = "" + count;
-        assure(document.getElementById("letters_answer"), HTMLDivElement).textContent = "" + answer.length;
+        showReault();
     }
-    else {
-        guess = "";
-        $inputRow.innerHTML = "";
-        $inputRow.classList.add("empty");
-    }
+
+    play.guess = "";
+
+    save();
+}
+
+function showReault() {
+    $inputRow.style.display = "none";
+    assure(document.getElementById("result"), HTMLDivElement).style.display = "";
+    assure(document.getElementById("letters_used"), HTMLDivElement).textContent = "" + play.letter_count;
+    assure(document.getElementById("letters_answer"), HTMLDivElement).textContent = "" + play.answer.length;
 }
 
 function share() {
-    const result = count + "/" + answer.length + "\n\n";
-    const pattern = progress.map(x => x.result.pattern.map(x =>
+    const result = play.letter_count + "/" + play.answer.length + "\n\n";
+    const pattern = play.history.map(x => diffle(play.answer, x).pattern.map(x =>
         x == 0 ? "\u26AA" : x == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
     ).join("")).join("\n");
 
@@ -194,12 +243,18 @@ Array.from("qwertyuiopasdfghjklzxcvbnm").forEach(letter => {
     keyboard_button.addEventListener("click", () => input_letter(letter));
 });
 
-function getDateString() {
+function getTodayString() {
     const now = new Date();
     return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 }
 
 function updateTimer() {
+    const today = getTodayString();
+    if (play.date !== today) {
+        assure(document.getElementById("timer"), HTMLDivElement).textContent = "00:00:00";
+        return;
+    }
+    
     const now = new Date();
     const rest = 86400 - (3600 * now.getHours() + 60 * now.getMinutes() + now.getSeconds());
 
@@ -215,4 +270,5 @@ assure(document.getElementById("keyboard_enter"), HTMLButtonElement).addEventLis
 assure(document.getElementById("keyboard_backspace"), HTMLButtonElement).addEventListener("click", input_backspace);
 assure(document.getElementById("share_button"), HTMLButtonElement).addEventListener("click", share);
 
+load();
 setInterval(updateTimer, 1000);
