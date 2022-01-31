@@ -12,17 +12,55 @@
 <body>
     <div class="wrapper">
         <header>
-            <label for="open_help" style="position: absolute; left: 0">
+            <h1 class="title">DIFFLE</h1>
+            <label for="open_help" style="position: absolute; left: 0;">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                     <path fill="#878a8c"
                         d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z">
                     </path>
                 </svg>
             </label>
-            <h1 class="title">DIFFLE</h1>
+            <!--
+            <label for="open_statistics" style="position: absolute; right: 0;">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                    <path fill="#878a8c"
+                        d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"></path>
+                </svg>
+            </label>
+            -->
         </header>
         <div id="board">
             <div id="input_row" class="guess empty"></div>
+        </div>
+        <div id="result" style="display: none;">
+            <div style="display: flex; flex-flow: row; justify-content: space-around; align-items: flex-end;">
+                <div class="letter_count">
+                    <div id="letters_used"></div>
+                    <div><span class="letter_count_label">Letters<br>Used</span></div>
+                </div>
+                <div class="slash"></div>
+                <div class="letter_count">
+                    <div id="letters_answer"></div>
+                    <div><span class="letter_count_label">Letters<br>Answer</span></div>
+                </div>
+            </div>
+
+            <div style="display: flex;width: 100%;">
+                <div class="timer">
+                    <h2>Next DIFFLE</h2>
+                    <div id="timer">03:41:25</div>
+                </div>
+                <div class="share">
+                    <button id="share_button">
+                        Share
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                            <path fill="white"
+                                d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
         <div id="keyboard">
             <div>
@@ -72,19 +110,27 @@
         <input type="radio" name="open_close_help" id="close_help" style="display: none" checked>
         <input type="radio" name="open_close_help" id="open_help" style="display: none">
         <div id="help">
-            <h2>How To Play</h2>
+            <header>
+                <div>
+                </div>
+                <h2>How To Play</h2>
+                <label for="close_help" style="position: absolute; right: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path fill="#878a8c"
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                        </path>
+                    </svg>
+                </label>
+            </header>
 
-            <p>Tiis game is inspired by Wordle.<br>
-                このゲームは Wordle の派生です。</p>
+            <p>Tiis game is inspired by Wordle.</p>
 
-            <p>Guess the word using as less total letters as possible.<br>
-                出来るだけ少ない文字数で、正解の単語を当ててください</p>
+            <p>Guess the word using as less total letters as possible.</p>
 
-            <p>Each guess must be a valid word. Hit the enter button to submit.<br>
-                それぞれの推測は有効な単語である必要があります。Enter を押すと確定します。</p>
+            <p>Each guess must be a valid word. Hit the enter button to submit.</p>
 
-            <p>After each guess, the color of the tiles will change to show how close your guess was to the word.<br>
-                推測するたびにタイルの色が変わり、推測が正解の単語にどれだけ近かったかがわかります。</p>
+            <p>After each guess, the color of the tiles will change to show how close your guess was to the word.
+            </p>
 
 
             <h2>Examples</h2>
@@ -96,30 +142,29 @@
                     <div class="letter absent">r</div>
                     <div class="letter absent">t</div>
                 </div>
-                <p>Gray letters are not in the word.<br>
-                    灰色の文字は正解の単語に使われていません。</p>
+                <p>Gray letters are not in the word.</p>
             </div>
             <div class="example">
                 <div class="guess">
-                    <div class="letter absent">s</div>
-                    <div class="letter present">m</div>
-                    <div class="letter absent">o</div>
-                    <div class="letter absent">g</div>
-                </div>
-                <p>The letter M is in the word.<br>
-                    M が正解の単語に使われています。</p>
-            </div>
-            <div class="example">
-                <div class="guess">
-                    <div class="letter absent">d</div>
-                    <div class="letter head">e</div>
-                    <div class="letter absent">t</div>
-                    <div class="letter head">a</div>
+                    <div class="letter absent">c</div>
+                    <div class="letter present">l</div>
                     <div class="letter absent">i</div>
+                    <div class="letter present">m</div>
+                    <div class="letter absent">b</div>
+                </div>
+                <p>The letter L, M is in the word, but wrong order.</p>
+            </div>
+            <div class="example">
+                <div class="guess">
+                    <div class="letter absent">c</div>
+                    <div class="letter head">e</div>
+                    <div class="letter absent">n</div>
+                    <div class="letter absent">t</div>
+                    <div class="letter absent">r</div>
+                    <div class="letter head">a</div>
                     <div class="letter head">l</div>
                 </div>
-                <p>The letters E, A, and L are in the word in this order.<br>
-                    E、A、L はこの順で使われています。</p>
+                <p>The letters E, A, and L are in the word in this order.</p>
             </div>
             <div class="example">
                 <div class="guess">
@@ -129,8 +174,7 @@
                     <div class="letter tail">l</div>
                     <div class="letter absent">y</div>
                 </div>
-                <p>The letter MPL is in the word in a row.<br>
-                    MPL はこの並びで使われています。</p>
+                <p>The letter MPL is in the word in a row.</p>
             </div>
             <div class="example">
                 <div class="guess">
@@ -141,8 +185,7 @@
                     <div class="letter head">l</div>
                     <div class="letter tail end">e</div>
                 </div>
-                <p>The word starts with E and ends with LE.<br>
-                    正解の単語は Eで始まり LE で終わります</p>
+                <p>The word starts with E and ends with LE.</p>
             </div>
             <div class="example">
                 <div class="guess">
@@ -154,13 +197,9 @@
                     <div class="letter tail">l</div>
                     <div class="letter tail end">e</div>
                 </div>
-                <p>This is the word.<br>
-                    これが正解の単語です。</p>
+                <p>This is the answer word.</p>
             </div>
-
-            <label for="close_help">close/閉じる</label>
         </div>
-
     </div>
     <script src="data.js"></script>
     <script src="main.js"></script>

@@ -88,9 +88,10 @@ function assure<T extends new (...args: any[]) => any>(a: any, b: T): InstanceTy
     throw new TypeError(`${a} is not ${b.name}.`);
 }
 
-const inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
-const board = assure(document.getElementById("board"), HTMLDivElement);
+const $inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
+const $board = assure(document.getElementById("board"), HTMLDivElement);
 let answer = answers[Math.floor(Math.random() * answers.length)];
+let progress: { guess: string, result: DiffleResult; }[] = [];
 let guess = "";
 let count = 0;
 
@@ -101,21 +102,21 @@ function input_letter(letter: string) {
     const letter_element = document.createElement("div");
     letter_element.className = "letter";
     letter_element.textContent = letter;
-    inputRow.appendChild(letter_element);
+    $inputRow.appendChild(letter_element);
     guess += letter;
     count++;
 
-    inputRow.classList.remove("empty");
+    $inputRow.classList.remove("empty");
     //console.log(guess);
 }
 function input_backspace() {
-    if (inputRow.lastElementChild) inputRow.removeChild(inputRow.lastElementChild);
+    if ($inputRow.lastElementChild) $inputRow.removeChild($inputRow.lastElementChild);
     if (guess !== "") {
         guess = guess.substring(0, guess.length - 1);
         count--;
     }
     if (guess == "")
-        inputRow.classList.add("empty");
+        $inputRow.classList.add("empty");
     console.log(guess);
 }
 function enter() {
@@ -148,17 +149,30 @@ function enter() {
 
         row.appendChild(letter_element);
     });
-    board.insertBefore(row, inputRow);
-    
+    $board.insertBefore(row, $inputRow);
+    progress.push({ guess, result });
+
     if (guess == answer) {
-        inputRow.style.display = "none";
-        setTimeout(()=>alert("excellent!"), 0);
+        $inputRow.style.display = "none";
+        setTimeout(() => alert("excellent!"), 0);
+        assure(document.getElementById("result"), HTMLDivElement).style.display = "";
+        assure(document.getElementById("letters_used"), HTMLDivElement).textContent = "" + count;
+        assure(document.getElementById("letters_answer"), HTMLDivElement).textContent = "" + answer.length;
     }
     else {
         guess = "";
-        inputRow.innerHTML = "";
-        inputRow.classList.add("empty");
+        $inputRow.innerHTML = "";
+        $inputRow.classList.add("empty");
     }
+}
+
+function share() {
+    const result = count + "/" + answer.length + "\n\n";
+    const pattern = progress.map(x => x.result.pattern.map(x =>
+        x == 0 ? "\u26AA" : x == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
+    ).join("")).join("\n");
+
+    navigator.clipboard.writeText("Diffle " + result + pattern);
 }
 
 document.addEventListener("keydown", (ev) => {
@@ -173,5 +187,25 @@ Array.from("qwertyuiopasdfghjklzxcvbnm").forEach(letter => {
     keyboard_button.addEventListener("click", () => input_letter(letter));
 });
 
+function getDateString() {
+    const now = new Date();
+    return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+}
+
+function updateTimer() {
+    const now = new Date()
+    const rest = 86400 - (3600 * now.getHours() + 60 * now.getMinutes() + now.getSeconds());
+
+    const rest_hours = Math.floor(rest / 3600);
+    const rest_minutes = Math.floor((rest - 3600 * rest_hours) / 60);
+    const rest_seconds = rest - 3600 * rest_hours - 60 * rest_minutes
+    const rest_format = `${("" + rest_hours).padStart(2, "0")}:${("" + rest_minutes).padStart(2, "0")}:${("" + rest_seconds).padStart(2, "0")}`
+
+    assure(document.getElementById("timer"), HTMLDivElement).textContent = rest_format;
+}
+
 assure(document.getElementById("keyboard_enter"), HTMLButtonElement).addEventListener("click", enter);
 assure(document.getElementById("keyboard_backspace"), HTMLButtonElement).addEventListener("click", input_backspace);
+assure(document.getElementById("share_button"), HTMLButtonElement).addEventListener("click", share);
+
+setInterval(updateTimer, 1000);

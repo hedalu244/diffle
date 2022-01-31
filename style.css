@@ -23,6 +23,13 @@ body {
     text-align: center;
 }
 
+button.icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
 .wrapper {
     position: relative;
     width: 50rem;
@@ -150,7 +157,6 @@ header {
     transform: translate(-50%, 0);
 }
 
-
 #keyboard {
     width: 50rem;
     display: flex;
@@ -208,6 +214,92 @@ header {
     flex: 0.5;
 }
 
+#result {
+    width: 100%;
+    margin: 4rem 0;
+}
+
+.letter_count {
+    font-family: 'HK Super Round Bold';
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.letter_count_label {
+    line-height: 2rem;
+    font-size: 1.8rem;
+    text-align: Left;
+    padding-left: 2rem;
+    display: inline-block;
+}
+
+#letters_used, #letters_answer {
+    display: block;
+    font-size: 8rem;
+    line-height: 8rem;
+}
+
+.slash {
+    height: 9rem;
+    width: 0;
+    border-left: 1px solid #1a1a1b;
+    transform: rotate(20deg);
+}
+
+.timer {
+    font-family: 'HK Super Round Bold';
+    border-right: 1px solid #1a1a1b;
+    padding-right: 12px;
+    width: 50%;
+}
+
+.timer>h2 {
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#timer {
+    font-size: 36px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    letter-spacing: 0.05em;
+}
+
+.share {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 12px;
+    width: 50%;
+}
+
+#share_button {
+    background-color: #6aaa64;
+    color: white;
+    font-family: inherit;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.3);
+    width: 80%;
+    font-size: 20px;
+    height: 52px;
+}
 
 #help {
     position: absolute;
@@ -219,7 +311,6 @@ header {
     z-index: 0;
     opacity: 0;
     transition: 0.3s ease-in-out;
-    overflow: scroll;
 }
 
 input[type=radio]:checked+#help {
