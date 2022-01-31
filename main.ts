@@ -175,7 +175,11 @@ function share() {
         x == 0 ? "\u26AA" : x == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
     ).join("")).join("\n");
 
-    navigator.clipboard.writeText("Diffle " + result + pattern);
+    navigator.clipboard.writeText("Diffle " + result + pattern).then(function () {
+        alert('Copyed results to clipboard');
+    }).catch(function (error) {
+        alert(error.message);
+    });
 }
 
 document.addEventListener("keydown", (ev) => {
