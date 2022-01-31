@@ -44,6 +44,7 @@ function diffle(answer: string, guess: string): DiffleResult {
         const pattern: (0 | 1 | 2 | 3)[] = Array.from({ length: guess.length }, (x, i) => answer.indexOf(guess[i]) == -1 ? 0 : 1);
 
         let accept_count = 0;
+        let streak_length = 0;
         let score = 0;
         if (start) score += 1;
         if (end) score += 1;
@@ -52,17 +53,19 @@ function diffle(answer: string, guess: string): DiffleResult {
         for (let i = 0; i < path.length; i++) {
             switch (path[i]) {
                 case ">":
-                    pattern[b] = path[i - 1] == ">" ? 3 : 2;
+                    accept_count++;
+                    streak_length++;
+                    pattern[b] = streak_length == 1 ? 2 : 3;
+                    score += 3 * streak_length;
                     a++;
                     b++;
-                    accept_count++;
-                    if (path[i - 1] == ">")
-                        score += 3;
                     break;
                 case "+":
+                    streak_length = 0;
                     a++;
                     break;
                 case "-":
+                    streak_length = 0;
                     b++;
                     break;
             }
@@ -193,13 +196,13 @@ function getDateString() {
 }
 
 function updateTimer() {
-    const now = new Date()
+    const now = new Date();
     const rest = 86400 - (3600 * now.getHours() + 60 * now.getMinutes() + now.getSeconds());
 
     const rest_hours = Math.floor(rest / 3600);
     const rest_minutes = Math.floor((rest - 3600 * rest_hours) / 60);
-    const rest_seconds = rest - 3600 * rest_hours - 60 * rest_minutes
-    const rest_format = `${("" + rest_hours).padStart(2, "0")}:${("" + rest_minutes).padStart(2, "0")}:${("" + rest_seconds).padStart(2, "0")}`
+    const rest_seconds = rest - 3600 * rest_hours - 60 * rest_minutes;
+    const rest_format = `${("" + rest_hours).padStart(2, "0")}:${("" + rest_minutes).padStart(2, "0")}:${("" + rest_seconds).padStart(2, "0")}`;
 
     assure(document.getElementById("timer"), HTMLDivElement).textContent = rest_format;
 }

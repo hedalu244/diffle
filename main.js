@@ -31,6 +31,7 @@ function diffle(answer, guess) {
         const end = path[path.length - 1] == ">";
         const pattern = Array.from({ length: guess.length }, (x, i) => answer.indexOf(guess[i]) == -1 ? 0 : 1);
         let accept_count = 0;
+        let streak_length = 0;
         let score = 0;
         if (start)
             score += 1;
@@ -40,17 +41,19 @@ function diffle(answer, guess) {
         for (let i = 0; i < path.length; i++) {
             switch (path[i]) {
                 case ">":
-                    pattern[b] = path[i - 1] == ">" ? 3 : 2;
+                    accept_count++;
+                    streak_length++;
+                    pattern[b] = streak_length == 1 ? 2 : 3;
+                    score += 3 * streak_length;
                     a++;
                     b++;
-                    accept_count++;
-                    if (path[i - 1] == ">")
-                        score += 3;
                     break;
                 case "+":
+                    streak_length = 0;
                     a++;
                     break;
                 case "-":
+                    streak_length = 0;
                     b++;
                     break;
             }
