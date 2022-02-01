@@ -117,19 +117,19 @@ header {
 }
 
 .letter.present {
-    background-color: #c9b458;
+    background-color: #d4b02f;
     color: white;
     border: none;
 }
 
 .letter.head {
-    background-color: #6aaa64;
+    background-color: #55ad5e;
     color: white;
     border: none;
 }
 
 .letter.tail {
-    background-color: #6aaa64;
+    background-color: #55ad5e;
     color: white;
     border: none;
 }
@@ -148,7 +148,7 @@ header {
     content: "";
     display: block;
     position: absolute;
-    background-color: #6aaa64;
+    background-color: #55ad5e;
     z-index: -10;
     top: 0;
     bottom: 0;
@@ -201,12 +201,12 @@ header {
 }
 
 #keyboard button.present {
-    background-color: #c9b458;
+    background-color: #d4b02f;
     color: white;
 }
 
 #keyboard button.correct {
-    background-color: #6aaa64;
+    background-color: #55ad5e;
     color: white;
 }
 
@@ -283,7 +283,7 @@ header {
 }
 
 #share_button {
-    background-color: #6aaa64;
+    background-color: #55ad5e;
     color: white;
     font-family: inherit;
     font-weight: bold;
