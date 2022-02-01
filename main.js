@@ -104,7 +104,12 @@ function load() {
     if (data)
         stat = data.stat;
     else
-        stat = [];
+        stat = {
+            played: 0,
+            won: 0,
+            total_guess_count: 0,
+            total_letter_count: 0,
+        };
     if (data && data.play.date == today) {
         play = data.play;
         play.history.forEach(x => guess(x));
@@ -119,6 +124,7 @@ function load() {
             history: [],
             letter_count: 0,
         };
+        stat.played++;
         save();
     }
 }
@@ -182,6 +188,9 @@ function enter() {
     play.history.push(play.guess);
     if (play.guess == play.answer) {
         setTimeout(() => alert("excellent!"), 0);
+        stat.won++;
+        stat.total_guess_count += play.history.length;
+        stat.total_letter_count += play.letter_count;
         showReault();
     }
     play.guess = "";
@@ -194,9 +203,11 @@ function showReault() {
     assure(document.getElementById("letters_answer"), HTMLDivElement).textContent = "" + play.answer.length;
 }
 function share() {
-    const result = play.letter_count + "/" + play.answer.length + "\n\n";
-    const pattern = play.history.map(x => diffle(play.answer, x).pattern.map(x => x == 0 ? "\u26AA" : x == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2").join("")).join("\n");
-    navigator.clipboard.writeText("Diffle " + result + pattern).then(function () {
+    const title = "Diffle " + play.date + "\n";
+    const result = play.letter_count + " letters used\n\n";
+    const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(y => i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2").join("")).join("\n");
+    const url = location.href;
+    navigator.clipboard.writeText(title + result + pattern + "\n\n" + url).then(function () {
         alert('Copyed results to clipboard');
     }).catch(function (error) {
         alert(error.message);

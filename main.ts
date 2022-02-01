@@ -98,12 +98,18 @@ interface PlayData {
     date: string;
     answer: string;
     guess: string;
-    history: string[];
     letter_count: number;
+    history: string[];
 }
-type Save = { play: PlayData, stat: []; };
+interface StatData {
+    played: number;
+    won: number;
+    total_guess_count: number;
+    total_letter_count: number;
+}
+type Save = { play: PlayData, stat: StatData; };
 let play: PlayData;
-let stat: [];
+let stat: StatData;
 
 
 function dailyRandom(max: number): number {
@@ -133,7 +139,12 @@ function load() {
     const data = dataString ? JSON.parse(dataString) as Save : null;
 
     if (data) stat = data.stat;
-    else stat = [];
+    else stat = {
+        played: 0,
+        won: 0,
+        total_guess_count: 0,
+        total_letter_count: 0,
+    }
 
     if (data && data.play.date == today) {
         play = data.play;
@@ -148,6 +159,7 @@ function load() {
             history: [],
             letter_count: 0,
         };
+        stat.played++;
         save();
     }
 }
@@ -221,6 +233,9 @@ function enter() {
 
     if (play.guess == play.answer) {
         setTimeout(() => alert("excellent!"), 0);
+        stat.won++;
+        stat.total_guess_count += play.history.length;
+        stat.total_letter_count += play.letter_count;
         showReault();
     }
 
@@ -237,12 +252,14 @@ function showReault() {
 }
 
 function share() {
-    const result = play.letter_count + "/" + play.answer.length + "\n\n";
-    const pattern = play.history.map(x => diffle(play.answer, x).pattern.map(x =>
-        x == 0 ? "\u26AA" : x == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
+    const title = "Diffle " + play.date + "\n";
+    const result = play.letter_count + " letters used\n\n";
+    const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(y =>
+        i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
     ).join("")).join("\n");
+    const url = location.href;
 
-    navigator.clipboard.writeText("Diffle " + result + pattern).then(function () {
+    navigator.clipboard.writeText(title + result + pattern + "\n\n" + url).then(function () {
         alert('Copyed results to clipboard');
     }).catch(function (error) {
         alert(error.message);
