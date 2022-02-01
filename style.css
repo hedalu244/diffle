@@ -301,7 +301,7 @@ header {
     height: 52px;
 }
 
-#help {
+#help, #stats{
     position: absolute;
     top: 100%;
     left: 0;
@@ -313,7 +313,7 @@ header {
     transition: 0.3s ease-in-out;
 }
 
-input[type=radio]:checked+#help {
+input[type=radio]:checked+#help, input[type=radio]:checked+#stats {
     opacity: 1;
     top: 0;
 }
@@ -329,3 +329,25 @@ input[type=radio]:checked+#help {
 .example p {
     margin: .5rem;
 }
+
+
+.stats_container {
+    font-family: 'HK Super Round Bold';
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    margin: 4rem 0;
+}
+
+.stats_number {
+    font-size: 4rem;
+    line-height: 4rem;
+    text-align: center;
+}
+
+.stats_label {
+    line-height: 2rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+

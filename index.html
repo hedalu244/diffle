@@ -20,20 +20,19 @@
                     </path>
                 </svg>
             </label>
-            <!--
-            <label for="open_statistics" style="position: absolute; right: 0;">
+            <label for="open_stats" style="position: absolute; right: 0;">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                     <path fill="#878a8c"
                         d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"></path>
                 </svg>
             </label>
-            -->
         </header>
         <div id="board">
             <div id="input_row" class="guess empty"></div>
         </div>
         <div id="result" style="display: none;">
-            <div style="display: flex; flex-flow: row; justify-content: space-around; align-items: flex-end;  margin-bottom: 2rem;">
+            <div
+                style="display: flex; flex-flow: row; justify-content: space-around; align-items: flex-end;  margin-bottom: 2rem;">
                 <div class="result_count">
                     <div id="words_used"></div>
                     <div><span class="result_count_label" id="words_used_label">Words<br>Used</span></div>
@@ -111,8 +110,6 @@
         <input type="radio" name="open_close_help" id="open_help" style="display: none">
         <div id="help">
             <header>
-                <div>
-                </div>
                 <h2>How To Play</h2>
                 <label for="close_help" style="position: absolute; right: 0;">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -200,7 +197,41 @@
                 <p>This is the answer word.</p>
             </div>
         </div>
+        <input type="radio" name="open_close_stats" id="close_stats" style="display: none" checked>
+        <input type="radio" name="open_close_stats" id="open_stats" style="display: none">
+        <div id="stats">
+            <header>
+                <h2>Statistics</h2>
+                <label for="close_stats" style="position: absolute; right: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path fill="#878a8c"
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                        </path>
+                    </svg>
+                </label>
+            </header>
+
+            <div class="stats_container">
+                <div class="stats">
+                    <div class="stats_number" id="stats_played"></div>
+                    <div class="stats_label">Played</div>
+                </div>
+                <div class="stats">
+                    <div class="stats_number" id="stats_won"></div>
+                    <div class="stats_label">Won</div>
+                </div>
+                <div class="stats">
+                    <div class="stats_number" id="stats_average_words"></div>
+                    <div><span class="stats_label">Average<br>Words</span></div>
+                </div>
+                <div class="stats">
+                    <div class="stats_number" id="stats_average_letters"></div>
+                    <div><span class="stats_label">Average<br>Letters</span></div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <script src="data.js"></script>
     <script src="main.js"></script>
 </body>

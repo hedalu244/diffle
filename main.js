@@ -127,6 +127,7 @@ function load() {
         stat.played++;
         save();
     }
+    showStats();
 }
 function inputLetter(letter) {
     if (!/^[a-z]$/.test(letter))
@@ -192,6 +193,7 @@ function enter() {
         stat.total_guess_count += play.history.length;
         stat.total_letter_count += play.letter_count;
         showReault();
+        showStats();
     }
     play.guess = "";
     save();
@@ -202,6 +204,12 @@ function showReault() {
     assure(document.getElementById("letters_used"), HTMLDivElement).textContent = "" + play.letter_count;
     assure(document.getElementById("words_used"), HTMLDivElement).textContent = "" + play.history.length;
     assure(document.getElementById("words_used_label"), HTMLSpanElement).innerHTML = play.history.length <= 1 ? "Word<br>Used" : "Words<br>Used";
+}
+function showStats() {
+    assure(document.getElementById("stats_played"), HTMLDivElement).textContent = "" + stat.played;
+    assure(document.getElementById("stats_won"), HTMLDivElement).textContent = "" + stat.won;
+    assure(document.getElementById("stats_average_words"), HTMLDivElement).textContent = (stat.total_guess_count / stat.won).toFixed(1);
+    assure(document.getElementById("stats_average_letters"), HTMLDivElement).textContent = (stat.total_letter_count / stat.won).toFixed(1);
 }
 function share() {
     const title = "Diffle " + play.date + "\n";

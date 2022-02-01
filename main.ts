@@ -118,7 +118,7 @@ function dailyRandom(max: number): number {
     let y = 362436069;
     let z = 521288629;
     let w = now.getDate() + now.getMonth() * 32 + now.getFullYear() * 400;
-    for(let i = 0; i < 1024; i++) {
+    for (let i = 0; i < 1024; i++) {
         let t = x ^ (x << 11);
         x = y;
         y = z;
@@ -144,7 +144,7 @@ function load() {
         won: 0,
         total_guess_count: 0,
         total_letter_count: 0,
-    }
+    };
 
     if (data && data.play.date == today) {
         play = data.play;
@@ -162,6 +162,8 @@ function load() {
         stat.played++;
         save();
     }
+
+    showStats();
 }
 
 function inputLetter(letter: string) {
@@ -237,6 +239,7 @@ function enter() {
         stat.total_guess_count += play.history.length;
         stat.total_letter_count += play.letter_count;
         showReault();
+        showStats();
     }
 
     play.guess = "";
@@ -250,6 +253,13 @@ function showReault() {
     assure(document.getElementById("letters_used"), HTMLDivElement).textContent = "" + play.letter_count;
     assure(document.getElementById("words_used"), HTMLDivElement).textContent = "" + play.history.length;
     assure(document.getElementById("words_used_label"), HTMLSpanElement).innerHTML = play.history.length <= 1 ? "Word<br>Used" : "Words<br>Used";
+}
+
+function showStats() {
+    assure(document.getElementById("stats_played"), HTMLDivElement).textContent = "" + stat.played;
+    assure(document.getElementById("stats_won"), HTMLDivElement).textContent = "" + stat.won;
+    assure(document.getElementById("stats_average_words"), HTMLDivElement).textContent = (stat.total_guess_count / stat.won).toFixed(1);
+    assure(document.getElementById("stats_average_letters"), HTMLDivElement).textContent = (stat.total_letter_count / stat.won).toFixed(1);
 }
 
 function share() {
