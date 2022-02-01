@@ -248,12 +248,13 @@ function showReault() {
     $inputRow.style.display = "none";
     assure(document.getElementById("result"), HTMLDivElement).style.display = "";
     assure(document.getElementById("letters_used"), HTMLDivElement).textContent = "" + play.letter_count;
-    assure(document.getElementById("letters_answer"), HTMLDivElement).textContent = "" + play.answer.length;
+    assure(document.getElementById("words_used"), HTMLDivElement).textContent = "" + play.history.length;
+    assure(document.getElementById("words_used_label"), HTMLSpanElement).innerHTML = play.history.length <= 1 ? "Word<br>Used" : "Words<br>Used";
 }
 
 function share() {
     const title = "Diffle " + play.date + "\n";
-    const result = play.letter_count + " letters used\n\n";
+    const result = play.history.length + " words / " + play.letter_count + " letters\n\n";
     const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(y =>
         i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
     ).join("")).join("\n");

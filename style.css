@@ -219,7 +219,7 @@ header {
     margin: 4rem 0;
 }
 
-.letter_count {
+.result_count {
     font-family: 'HK Super Round Bold';
     display: flex;
     flex-flow: row;
@@ -227,7 +227,7 @@ header {
     align-items: baseline;
 }
 
-.letter_count_label {
+.result_count_label {
     line-height: 2rem;
     font-size: 1.8rem;
     text-align: Left;
@@ -235,7 +235,7 @@ header {
     display: inline-block;
 }
 
-#letters_used, #letters_answer {
+#letters_used, #words_used {
     display: block;
     font-size: 8rem;
     line-height: 8rem;
