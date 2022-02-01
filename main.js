@@ -79,6 +79,24 @@ const $inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
 const $board = assure(document.getElementById("board"), HTMLDivElement);
 let play;
 let stat;
+function dailyRandom(max) {
+    const now = new Date();
+    let x = 123456789;
+    let y = 362436069;
+    let z = 521288629;
+    let w = now.getDate() + now.getMonth() * 32 + now.getFullYear() * 400;
+    for (let i = 0; i < 1024; i++) {
+        let t = x ^ (x << 11);
+        x = y;
+        y = z;
+        z = w;
+        w = (w ^ (w >>> 19)) ^ (t ^ (t >>> 8));
+    }
+    return Math.abs(w) % max;
+}
+function save() {
+    localStorage.setItem("diffle_save", JSON.stringify({ play, stat }));
+}
 function load() {
     const today = getTodayString();
     const dataString = localStorage.getItem("diffle_save");
@@ -96,15 +114,13 @@ function load() {
     else {
         play = {
             date: today,
-            answer: answers[Math.floor(Math.random() * answers.length)],
+            answer: answers[dailyRandom(answers.length)],
             guess: "",
             history: [],
             letter_count: 0,
         };
+        save();
     }
-}
-function save() {
-    localStorage.setItem("diffle_save", JSON.stringify({ play, stat }));
 }
 function input_letter(letter) {
     if (!/^[a-z]$/.test(letter))

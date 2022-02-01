@@ -105,6 +105,27 @@ type Save = { play: PlayData, stat: []; };
 let play: PlayData;
 let stat: [];
 
+
+function dailyRandom(max: number): number {
+    const now = new Date();
+    let x = 123456789;
+    let y = 362436069;
+    let z = 521288629;
+    let w = now.getDate() + now.getMonth() * 32 + now.getFullYear() * 400;
+    for(let i = 0; i < 1024; i++) {
+        let t = x ^ (x << 11);
+        x = y;
+        y = z;
+        z = w;
+        w = (w ^ (w >>> 19)) ^ (t ^ (t >>> 8));
+    }
+    return Math.abs(w) % max;
+}
+
+function save() {
+    localStorage.setItem("diffle_save", JSON.stringify({ play, stat }));
+}
+
 function load() {
     const today = getTodayString();
 
@@ -122,16 +143,13 @@ function load() {
     else {
         play = {
             date: today,
-            answer: answers[Math.floor(Math.random() * answers.length)],
+            answer: answers[dailyRandom(answers.length)],
             guess: "",
             history: [],
             letter_count: 0,
         };
+        save();
     }
-}
-
-function save() {
-    localStorage.setItem("diffle_save", JSON.stringify({ play, stat }));
 }
 
 function input_letter(letter: string) {
@@ -254,7 +272,7 @@ function updateTimer() {
         assure(document.getElementById("timer"), HTMLDivElement).textContent = "00:00:00";
         return;
     }
-    
+
     const now = new Date();
     const rest = 86400 - (3600 * now.getHours() + 60 * now.getMinutes() + now.getSeconds());
 
