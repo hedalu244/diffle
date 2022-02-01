@@ -78,7 +78,7 @@ function assure(a, b) {
 const $inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
 const $board = assure(document.getElementById("board"), HTMLDivElement);
 let play;
-let stat;
+let stats;
 function dailyRandom(max) {
     const now = new Date();
     let x = 123456789;
@@ -95,23 +95,26 @@ function dailyRandom(max) {
     return Math.abs(w) % max;
 }
 function save() {
-    localStorage.setItem("diffle_save", JSON.stringify({ play, stat }));
+    localStorage.setItem("diffle_play", JSON.stringify(play));
+    localStorage.setItem("diffle_stats", JSON.stringify(stats));
 }
 function load() {
     const today = getTodayString();
-    const dataString = localStorage.getItem("diffle_save");
-    const data = dataString ? JSON.parse(dataString) : null;
-    if (data)
-        stat = data.stat;
+    const statsString = localStorage.getItem("diffle_stats");
+    const _stats = statsString ? JSON.parse(statsString) : null;
+    if (_stats)
+        stats = _stats;
     else
-        stat = {
+        stats = {
             played: 0,
             won: 0,
             total_guess_count: 0,
             total_letter_count: 0,
         };
-    if (data && data.play.date == today) {
-        play = data.play;
+    const playString = localStorage.getItem("diffle_play");
+    const _play = playString ? JSON.parse(playString) : null;
+    if (_play && _play.date == today) {
+        play = _play;
         play.history.forEach(x => insertGuess(x));
         Array.from(play.guess).forEach(x => insertLetter(x));
         if (play.history[play.history.length - 1] == play.answer)
@@ -125,7 +128,7 @@ function load() {
             history: [],
             letter_count: 0,
         };
-        stat.played++;
+        stats.played++;
         save();
     }
     showStats();
@@ -193,9 +196,9 @@ function enter() {
     play.history.push(play.guess);
     if (play.guess == play.answer) {
         setTimeout(() => myAlert("excellent!"), 0);
-        stat.won++;
-        stat.total_guess_count += play.history.length;
-        stat.total_letter_count += play.letter_count;
+        stats.won++;
+        stats.total_guess_count += play.history.length;
+        stats.total_letter_count += play.letter_count;
         showReault();
         showStats();
     }
@@ -210,10 +213,10 @@ function showReault() {
     assure(document.getElementById("words_used_label"), HTMLSpanElement).innerHTML = play.history.length <= 1 ? "Word<br>Used" : "Words<br>Used";
 }
 function showStats() {
-    assure(document.getElementById("stats_played"), HTMLDivElement).textContent = "" + stat.played;
-    assure(document.getElementById("stats_won"), HTMLDivElement).textContent = "" + stat.won;
-    assure(document.getElementById("stats_average_words"), HTMLDivElement).textContent = stat.won == 0 ? "0.0" : (stat.total_guess_count / stat.won).toFixed(1);
-    assure(document.getElementById("stats_average_letters"), HTMLDivElement).textContent = stat.won == 0 ? "0.0" : (stat.total_letter_count / stat.won).toFixed(1);
+    assure(document.getElementById("stats_played"), HTMLDivElement).textContent = "" + stats.played;
+    assure(document.getElementById("stats_won"), HTMLDivElement).textContent = "" + stats.won;
+    assure(document.getElementById("stats_average_words"), HTMLDivElement).textContent = stats.won == 0 ? "0.0" : (stats.total_guess_count / stats.won).toFixed(1);
+    assure(document.getElementById("stats_average_letters"), HTMLDivElement).textContent = stats.won == 0 ? "0.0" : (stats.total_letter_count / stats.won).toFixed(1);
 }
 function myAlert(message) {
     const alert = assure(document.getElementById("alert"), HTMLDivElement);

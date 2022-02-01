@@ -101,15 +101,14 @@ interface PlayData {
     letter_count: number;
     history: string[];
 }
-interface StatData {
+interface StatsData {
     played: number;
     won: number;
     total_guess_count: number;
     total_letter_count: number;
 }
-type Save = { play: PlayData, stat: StatData; };
 let play: PlayData;
-let stat: StatData;
+let stats: StatsData;
 
 
 function dailyRandom(max: number): number {
@@ -129,25 +128,29 @@ function dailyRandom(max: number): number {
 }
 
 function save() {
-    localStorage.setItem("diffle_save", JSON.stringify({ play, stat }));
+    localStorage.setItem("diffle_play", JSON.stringify(play));
+    localStorage.setItem("diffle_stats", JSON.stringify(stats));
 }
 
 function load() {
     const today = getTodayString();
 
-    const dataString = localStorage.getItem("diffle_save");
-    const data = dataString ? JSON.parse(dataString) as Save : null;
-
-    if (data) stat = data.stat;
-    else stat = {
+    const statsString = localStorage.getItem("diffle_stats");
+    const _stats = statsString ? JSON.parse(statsString) as StatsData : null;
+    
+    if (_stats) stats = _stats;
+    else stats = {
         played: 0,
         won: 0,
         total_guess_count: 0,
         total_letter_count: 0,
     };
 
-    if (data && data.play.date == today) {
-        play = data.play;
+    const playString = localStorage.getItem("diffle_play");
+    const _play = playString ? JSON.parse(playString) as PlayData : null;
+
+    if (_play && _play.date == today) {
+        play = _play;
         play.history.forEach(x => insertGuess(x));
         
         Array.from(play.guess).forEach(x => insertLetter(x));
@@ -161,7 +164,7 @@ function load() {
             history: [],
             letter_count: 0,
         };
-        stat.played++;
+        stats.played++;
         save();
     }
 
@@ -241,9 +244,9 @@ function enter() {
 
     if (play.guess == play.answer) {
         setTimeout(() => myAlert("excellent!"), 0);
-        stat.won++;
-        stat.total_guess_count += play.history.length;
-        stat.total_letter_count += play.letter_count;
+        stats.won++;
+        stats.total_guess_count += play.history.length;
+        stats.total_letter_count += play.letter_count;
         showReault();
         showStats();
     }
@@ -262,10 +265,10 @@ function showReault() {
 }
 
 function showStats() {
-    assure(document.getElementById("stats_played"), HTMLDivElement).textContent = "" + stat.played;
-    assure(document.getElementById("stats_won"), HTMLDivElement).textContent = "" + stat.won;
-    assure(document.getElementById("stats_average_words"), HTMLDivElement).textContent = stat.won == 0 ? "0.0" : (stat.total_guess_count / stat.won).toFixed(1);
-    assure(document.getElementById("stats_average_letters"), HTMLDivElement).textContent = stat.won == 0 ? "0.0" : (stat.total_letter_count / stat.won).toFixed(1);
+    assure(document.getElementById("stats_played"), HTMLDivElement).textContent = "" + stats.played;
+    assure(document.getElementById("stats_won"), HTMLDivElement).textContent = "" + stats.won;
+    assure(document.getElementById("stats_average_words"), HTMLDivElement).textContent = stats.won == 0 ? "0.0" : (stats.total_guess_count / stats.won).toFixed(1);
+    assure(document.getElementById("stats_average_letters"), HTMLDivElement).textContent = stats.won == 0 ? "0.0" : (stats.total_letter_count / stats.won).toFixed(1);
 }
 
 function myAlert(message: string) {
