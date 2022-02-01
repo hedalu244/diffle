@@ -224,7 +224,7 @@ function guess(guess: string) {
 
 function enter() {
     if (!arrowed.includes(play.guess)) {
-        alert("not in word list");
+        myAlert("not in word list");
         return;
     }
 
@@ -234,7 +234,7 @@ function enter() {
     play.history.push(play.guess);
 
     if (play.guess == play.answer) {
-        setTimeout(() => alert("excellent!"), 0);
+        setTimeout(() => myAlert("excellent!"), 0);
         stat.won++;
         stat.total_guess_count += play.history.length;
         stat.total_letter_count += play.letter_count;
@@ -258,8 +258,17 @@ function showReault() {
 function showStats() {
     assure(document.getElementById("stats_played"), HTMLDivElement).textContent = "" + stat.played;
     assure(document.getElementById("stats_won"), HTMLDivElement).textContent = "" + stat.won;
-    assure(document.getElementById("stats_average_words"), HTMLDivElement).textContent = (stat.total_guess_count / stat.won).toFixed(1);
-    assure(document.getElementById("stats_average_letters"), HTMLDivElement).textContent = (stat.total_letter_count / stat.won).toFixed(1);
+    assure(document.getElementById("stats_average_words"), HTMLDivElement).textContent = stat.won == 0 ? "0.0" : (stat.total_guess_count / stat.won).toFixed(1);
+    assure(document.getElementById("stats_average_letters"), HTMLDivElement).textContent = stat.won == 0 ? "0.0" : (stat.total_letter_count / stat.won).toFixed(1);
+}
+
+function myAlert(message: string) {
+    const alert = assure(document.getElementById("alert"), HTMLDivElement)
+    
+    alert.textContent = message;
+    alert.classList.add("visible");
+
+    setTimeout(()=>alert.classList.remove("visible"), 1500);
 }
 
 function share() {
@@ -271,9 +280,9 @@ function share() {
     const url = location.href;
 
     navigator.clipboard.writeText(title + result + pattern + "\n\n" + url).then(function () {
-        alert('Copyed results to clipboard');
+        myAlert('Copyed results to clipboard');
     }).catch(function (error) {
-        alert(error.message);
+        myAlert(error.message);
     });
 }
 

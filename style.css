@@ -351,3 +351,25 @@ input[type=radio]:checked+#help, input[type=radio]:checked+#stats {
     text-align: center;
 }
 
+#alert {
+    font-family: 'HK Super Round Bold';
+    font-size: 1.5rem;
+    letter-spacing: 0.1rem;
+
+    position: fixed;
+    left: auto;
+    right: auto;
+    color: white;
+    padding: 2rem;
+    background-color: #1a1a1b;
+    box-shadow: #0005 0px 5px 20px;
+
+    opacity: 0;
+    top: -30vh;
+    transition: 0.3s ease-in-out;
+}
+
+#alert.visible {
+    opacity: 1;
+    top: 15vh;
+}
