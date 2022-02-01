@@ -79,12 +79,15 @@ const $inputRow = assure(document.getElementById("input_row"), HTMLDivElement);
 const $board = assure(document.getElementById("board"), HTMLDivElement);
 let play;
 let stats;
-function dailyRandom(max) {
+function dailySeed() {
     const now = new Date();
+    return now.getDate() + now.getMonth() * 32 + now.getFullYear() * 400;
+}
+function getAnswer(seed) {
     let x = 123456789;
     let y = 362436069;
     let z = 521288629;
-    let w = now.getDate() + now.getMonth() * 32 + now.getFullYear() * 400;
+    let w = seed;
     for (let i = 0; i < 1024; i++) {
         let t = x ^ (x << 11);
         x = y;
@@ -92,7 +95,7 @@ function dailyRandom(max) {
         z = w;
         w = (w ^ (w >>> 19)) ^ (t ^ (t >>> 8));
     }
-    return Math.abs(w) % max;
+    return answers[Math.abs(w) % answers.length];
 }
 function save() {
     localStorage.setItem("diffle_play", JSON.stringify(play));
@@ -117,18 +120,17 @@ function load() {
         play = _play;
         play.history.forEach(x => insertGuess(x));
         Array.from(play.guess).forEach(x => insertLetter(x));
-        if (play.history[play.history.length - 1] == play.answer)
+        if (play.history[play.history.length - 1] == getAnswer(play.seed))
             showReault();
     }
     else {
         play = {
             date: today,
-            answer: answers[dailyRandom(answers.length)],
+            seed: dailySeed(),
             guess: "",
             history: [],
             letter_count: 0,
         };
-        stats.played++;
         save();
     }
     showStats();
@@ -143,7 +145,7 @@ function insertLetter(letter) {
 function insertGuess(guess) {
     const row = document.createElement("div");
     row.className = "guess";
-    const result = diffle(play.answer, guess);
+    const result = diffle(getAnswer(play.seed), guess);
     Array.from(guess).forEach((letter, i) => {
         const letter_element = document.createElement("div");
         letter_element.className = "letter";
@@ -191,10 +193,14 @@ function enter() {
         myAlert("not in word list");
         return;
     }
+    if (play.history.length == 0) {
+        stats.played++;
+        showStats();
+    }
     insertGuess(play.guess);
     play.letter_count += play.guess.length;
     play.history.push(play.guess);
-    if (play.guess == play.answer) {
+    if (play.guess == getAnswer(play.seed)) {
         setTimeout(() => myAlert("excellent!"), 0);
         stats.won++;
         stats.total_guess_count += play.history.length;
@@ -227,7 +233,7 @@ function myAlert(message) {
 function share() {
     const title = "Diffle " + play.date + "\n";
     const result = play.history.length + " words / " + play.letter_count + " letters\n\n";
-    const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(y => i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2").join("")).join("\n");
+    const pattern = play.history.map((x, i) => diffle(getAnswer(play.seed), x).pattern.map(y => i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2").join("")).join("\n");
     const url = location.href;
     navigator.clipboard.writeText(title + result + pattern + "\n\n" + url).then(function () {
         myAlert('Copyed results to clipboard');

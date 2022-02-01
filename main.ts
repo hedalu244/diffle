@@ -96,7 +96,7 @@ const $board = assure(document.getElementById("board"), HTMLDivElement);
 
 interface PlayData {
     date: string;
-    answer: string;
+    seed: number;
     guess: string;
     letter_count: number;
     history: string[];
@@ -110,13 +110,16 @@ interface StatsData {
 let play: PlayData;
 let stats: StatsData;
 
-
-function dailyRandom(max: number): number {
+function dailySeed() {
     const now = new Date();
+    return now.getDate() + now.getMonth() * 32 + now.getFullYear() * 400;
+}
+
+function getAnswer(seed: number): string {
     let x = 123456789;
     let y = 362436069;
     let z = 521288629;
-    let w = now.getDate() + now.getMonth() * 32 + now.getFullYear() * 400;
+    let w = seed;
     for (let i = 0; i < 1024; i++) {
         let t = x ^ (x << 11);
         x = y;
@@ -124,7 +127,8 @@ function dailyRandom(max: number): number {
         z = w;
         w = (w ^ (w >>> 19)) ^ (t ^ (t >>> 8));
     }
-    return Math.abs(w) % max;
+
+    return answers[Math.abs(w) % answers.length];
 }
 
 function save() {
@@ -137,7 +141,7 @@ function load() {
 
     const statsString = localStorage.getItem("diffle_stats");
     const _stats = statsString ? JSON.parse(statsString) as StatsData : null;
-    
+
     if (_stats) stats = _stats;
     else stats = {
         played: 0,
@@ -152,19 +156,18 @@ function load() {
     if (_play && _play.date == today) {
         play = _play;
         play.history.forEach(x => insertGuess(x));
-        
+
         Array.from(play.guess).forEach(x => insertLetter(x));
-        if (play.history[play.history.length - 1] == play.answer) showReault();
+        if (play.history[play.history.length - 1] == getAnswer(play.seed)) showReault();
     }
     else {
         play = {
             date: today,
-            answer: answers[dailyRandom(answers.length)],
+            seed: dailySeed(),
             guess: "",
             history: [],
             letter_count: 0,
         };
-        stats.played++;
         save();
     }
 
@@ -183,7 +186,7 @@ function insertGuess(guess: string) {
     const row = document.createElement("div");
     row.className = "guess";
 
-    const result = diffle(play.answer, guess);
+    const result = diffle(getAnswer(play.seed), guess);
 
     Array.from(guess).forEach((letter, i) => {
         const letter_element = document.createElement("div");
@@ -236,13 +239,17 @@ function enter() {
         myAlert("not in word list");
         return;
     }
+    if (play.history.length == 0) {
+        stats.played++;
+        showStats();
+    }
 
     insertGuess(play.guess);
 
     play.letter_count += play.guess.length;
     play.history.push(play.guess);
 
-    if (play.guess == play.answer) {
+    if (play.guess == getAnswer(play.seed)) {
         setTimeout(() => myAlert("excellent!"), 0);
         stats.won++;
         stats.total_guess_count += play.history.length;
@@ -272,18 +279,18 @@ function showStats() {
 }
 
 function myAlert(message: string) {
-    const alert = assure(document.getElementById("alert"), HTMLDivElement)
-    
+    const alert = assure(document.getElementById("alert"), HTMLDivElement);
+
     alert.textContent = message;
     alert.classList.add("visible");
 
-    setTimeout(()=>alert.classList.remove("visible"), 1500);
+    setTimeout(() => alert.classList.remove("visible"), 1500);
 }
 
 function share() {
     const title = "Diffle " + play.date + "\n";
     const result = play.history.length + " words / " + play.letter_count + " letters\n\n";
-    const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(y =>
+    const pattern = play.history.map((x, i) => diffle(getAnswer(play.seed), x).pattern.map(y =>
         i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
     ).join("")).join("\n");
     const url = location.href;
