@@ -112,7 +112,8 @@ function load() {
         };
     if (data && data.play.date == today) {
         play = data.play;
-        play.history.forEach(x => guess(x));
+        play.history.forEach(x => insertGuess(x));
+        Array.from(play.guess).forEach(x => insertLetter(x));
         if (play.history[play.history.length - 1] == play.answer)
             showReault();
     }
@@ -129,31 +130,14 @@ function load() {
     }
     showStats();
 }
-function inputLetter(letter) {
-    if (!/^[a-z]$/.test(letter))
-        throw new Error("invalid input");
-    if (10 <= play.guess.length)
-        return;
+function insertLetter(letter) {
     const letter_element = document.createElement("div");
     letter_element.className = "letter";
     letter_element.textContent = letter;
     $inputRow.appendChild(letter_element);
     $inputRow.classList.remove("empty");
-    play.guess += letter;
-    save();
-    //console.log(guess);
 }
-function inputBackspace() {
-    if ($inputRow.lastElementChild)
-        $inputRow.removeChild($inputRow.lastElementChild);
-    if (play.guess !== "")
-        play.guess = play.guess.substring(0, play.guess.length - 1);
-    if (play.guess == "")
-        $inputRow.classList.add("empty");
-    console.log(play.guess);
-    save();
-}
-function guess(guess) {
+function insertGuess(guess) {
     const row = document.createElement("div");
     row.className = "guess";
     const result = diffle(play.answer, guess);
@@ -179,12 +163,32 @@ function guess(guess) {
     $inputRow.innerHTML = "";
     $inputRow.classList.add("empty");
 }
+function inputLetter(letter) {
+    if (!/^[a-z]$/.test(letter))
+        throw new Error("invalid input");
+    if (10 <= play.guess.length)
+        return;
+    insertLetter(letter);
+    play.guess += letter;
+    save();
+    //console.log(guess);
+}
+function inputBackspace() {
+    if ($inputRow.lastElementChild)
+        $inputRow.removeChild($inputRow.lastElementChild);
+    if (play.guess !== "")
+        play.guess = play.guess.substring(0, play.guess.length - 1);
+    if (play.guess == "")
+        $inputRow.classList.add("empty");
+    console.log(play.guess);
+    save();
+}
 function enter() {
     if (!arrowed.includes(play.guess)) {
         myAlert("not in word list");
         return;
     }
-    guess(play.guess);
+    insertGuess(play.guess);
     play.letter_count += play.guess.length;
     play.history.push(play.guess);
     if (play.guess == play.answer) {
