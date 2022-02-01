@@ -152,7 +152,7 @@ function load() {
     }
 }
 
-function input_letter(letter: string) {
+function inputLetter(letter: string) {
     if (!/^[a-z]$/.test(letter)) throw new Error("invalid input");
     if (10 <= play.guess.length) return;
 
@@ -166,7 +166,7 @@ function input_letter(letter: string) {
     save();
     //console.log(guess);
 }
-function input_backspace() {
+function inputBackspace() {
     if ($inputRow.lastElementChild) $inputRow.removeChild($inputRow.lastElementChild);
     if (play.guess !== "")
         play.guess = play.guess.substring(0, play.guess.length - 1);
@@ -251,14 +251,14 @@ function share() {
 
 document.addEventListener("keydown", (ev) => {
     //console.log(ev.key);
-    if (ev.key == "Backspace") input_backspace();
+    if (ev.key == "Backspace") inputBackspace();
     if (ev.key == "Enter") enter();
-    if (/^[A-Za-z]$/.test(ev.key)) input_letter(ev.key.toLowerCase());
+    if (/^[A-Za-z]$/.test(ev.key)) inputLetter(ev.key.toLowerCase());
 });
 
 Array.from("qwertyuiopasdfghjklzxcvbnm").forEach(letter => {
     const keyboard_button = assure(document.getElementById("keyboard_" + letter), HTMLButtonElement);
-    keyboard_button.addEventListener("click", () => input_letter(letter));
+    keyboard_button.addEventListener("click", () => inputLetter(letter));
 });
 
 function getTodayString() {
@@ -285,7 +285,7 @@ function updateTimer() {
 }
 
 assure(document.getElementById("keyboard_enter"), HTMLButtonElement).addEventListener("click", enter);
-assure(document.getElementById("keyboard_backspace"), HTMLButtonElement).addEventListener("click", input_backspace);
+assure(document.getElementById("keyboard_backspace"), HTMLButtonElement).addEventListener("click", inputBackspace);
 assure(document.getElementById("share_button"), HTMLButtonElement).addEventListener("click", share);
 
 load();
