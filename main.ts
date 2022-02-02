@@ -290,7 +290,7 @@ function myAlert(message: string) {
 
 function share() {
     const title = "Diffle " + play.date + "\n";
-    const result = play.history.length + " words / " + play.letter_count + " letters\n\n";
+    const result = play.history.length + (play.history.length <= 1 ? " word / " : " words / ") + play.letter_count + " letters\n\n";
     const pattern = play.history.map((x, i) => diffle(getAnswer(play.seed), x).pattern.map(y =>
         i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
     ).join("")).join("\n");
