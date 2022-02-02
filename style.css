@@ -42,16 +42,23 @@ button.icon {
 }
 
 header {
+    background-color: white;
+    height: 5rem;
+    width: 50rem;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
-    height: 5rem;
     border-bottom: 1px solid #d3d6da;
-    width: 50rem;
 }
 
 .title {
+    position:fixed;
+    top: 0;
+    z-index: 10;
+}
+
+.title>h1 {
     font-family: 'HK Super Round Bold';
     font-weight: 700;
     font-size: 3.6rem;
@@ -62,6 +69,11 @@ header {
     left: 0;
     right: 0;
     pointer-events: none;
+}
+
+#game {
+    width: 100%;
+    margin: 5rem 0 25rem 0;
 }
 
 #board {
@@ -158,11 +170,14 @@ header {
 }
 
 #keyboard {
+    position: fixed;
+    bottom: 0;
     width: 50rem;
     display: flex;
     flex-flow: column nowrap;
     user-select: none;
     touch-action: manipulation;
+    background-color: white;
 }
 
 #keyboard>div {
@@ -216,7 +231,7 @@ header {
 
 #result {
     width: 100%;
-    margin: 4rem 0;
+    margin: 5rem 0;
 }
 
 .result_count {
@@ -299,13 +314,12 @@ header {
 }
 
 #help, #stats{
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    height: 100%;
+    z-index: 20;
+    position: fixed;
+    top: 100vh;
+    width: 50rem;
+    height: 100vh;
     background-color: white;
-    z-index: 0;
     opacity: 0;
     transition: 0.3s ease-in-out;
 }
