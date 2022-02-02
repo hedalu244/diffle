@@ -104,16 +104,15 @@ function save() {
 function load() {
     const today = getTodayString();
     const statsString = localStorage.getItem("diffle_stats");
-    const _stats = statsString ? JSON.parse(statsString) : null;
-    if (_stats)
-        stats = _stats;
-    else
-        stats = {
-            played: 0,
-            won: 0,
-            total_guess_count: 0,
-            total_letter_count: 0,
-        };
+    stats = statsString ? JSON.parse(statsString) : {};
+    if (stats.played == undefined)
+        stats.played = 0;
+    if (stats.won == undefined)
+        stats.won = 0;
+    if (stats.total_guess_count == undefined)
+        stats.total_guess_count = 0;
+    if (stats.total_letter_count == undefined)
+        stats.total_letter_count = 0;
     const playString = localStorage.getItem("diffle_play");
     const _play = playString ? JSON.parse(playString) : null;
     if (_play && _play.date == today) {

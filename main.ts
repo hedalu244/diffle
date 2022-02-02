@@ -140,15 +140,12 @@ function load() {
     const today = getTodayString();
 
     const statsString = localStorage.getItem("diffle_stats");
-    const _stats = statsString ? JSON.parse(statsString) as StatsData : null;
+    stats = statsString ? JSON.parse(statsString) : {} as StatsData;
 
-    if (_stats) stats = _stats;
-    else stats = {
-        played: 0,
-        won: 0,
-        total_guess_count: 0,
-        total_letter_count: 0,
-    };
+    if(stats.played == undefined) stats.played = 0;
+    if(stats.won == undefined) stats.won = 0;
+    if(stats.total_guess_count == undefined) stats.total_guess_count = 0;
+    if(stats.total_letter_count == undefined) stats.total_letter_count = 0;
 
     const playString = localStorage.getItem("diffle_play");
     const _play = playString ? JSON.parse(playString) as PlayData : null;
@@ -214,6 +211,7 @@ function insertGuess(guess: string) {
 }
 
 function inputLetter(letter: string) {
+    if (play.history[play.history.length - 1] == getAnswer(play.seed)) return;
     if (!/^[a-z]$/.test(letter)) throw new Error("invalid input");
     if (10 <= play.guess.length) return;
 
@@ -224,6 +222,7 @@ function inputLetter(letter: string) {
     //console.log(guess);
 }
 function inputBackspace() {
+    if (play.history[play.history.length - 1] == getAnswer(play.seed)) return;
     if ($inputRow.lastElementChild) $inputRow.removeChild($inputRow.lastElementChild);
     if (play.guess !== "")
         play.guess = play.guess.substring(0, play.guess.length - 1);
@@ -235,6 +234,7 @@ function inputBackspace() {
 }
 
 function enter() {
+    if (play.history[play.history.length - 1] == getAnswer(play.seed)) return;
     if (!arrowed.includes(play.guess)) {
         myAlert("not in word list");
         return;
