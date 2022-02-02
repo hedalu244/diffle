@@ -266,6 +266,7 @@ function enter() {
 function showReault() {
     $inputRow.style.display = "none";
     assure(document.getElementById("result"), HTMLDivElement).style.display = "";
+    assure(document.getElementById("timer_container"), HTMLDivElement).style.display = "";
     assure(document.getElementById("letters_used"), HTMLDivElement).textContent = "" + play.letter_count;
     assure(document.getElementById("words_used"), HTMLDivElement).textContent = "" + play.history.length;
     assure(document.getElementById("words_used_label"), HTMLSpanElement).innerHTML = play.history.length <= 1 ? "Word<br>Used" : "Words<br>Used";
