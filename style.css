@@ -58,13 +58,25 @@ header {
     z-index: 10;
 }
 
-.title>h1 {
+h1 {
     font-family: 'HK Super Round Bold';
     font-weight: 700;
     font-size: 3.6rem;
     padding-top: 0.4rem;
-    letter-spacing: 0.4rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+    text-align: center;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+h2 {
+    font-family: 'HK Super Round Bold';
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    padding-top: 0.4rem;
+    letter-spacing: 0.1em;
     text-align: center;
     left: 0;
     right: 0;
@@ -265,15 +277,10 @@ header {
 
 .timer {
     font-family: 'HK Super Round Bold';
-    padding-right: 12px;
     width: 100%;
 }
 
 .timer>h2 {
-    font-weight: 700;
-    font-size: 16px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
     text-align: center;
     margin-bottom: 10px;
 }
