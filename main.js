@@ -168,6 +168,8 @@ function insertGuess(guess) {
     $inputRow.classList.add("empty");
 }
 function inputLetter(letter) {
+    if (play.history[play.history.length - 1] == getAnswer(play.seed))
+        return;
     if (!/^[a-z]$/.test(letter))
         throw new Error("invalid input");
     if (10 <= play.guess.length)
@@ -178,6 +180,8 @@ function inputLetter(letter) {
     //console.log(guess);
 }
 function inputBackspace() {
+    if (play.history[play.history.length - 1] == getAnswer(play.seed))
+        return;
     if ($inputRow.lastElementChild)
         $inputRow.removeChild($inputRow.lastElementChild);
     if (play.guess !== "")
@@ -188,6 +192,8 @@ function inputBackspace() {
     save();
 }
 function enter() {
+    if (play.history[play.history.length - 1] == getAnswer(play.seed))
+        return;
     if (!arrowed.includes(play.guess)) {
         myAlert("not in word list");
         return;
