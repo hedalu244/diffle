@@ -194,7 +194,7 @@ function inputBackspace() {
 function enter() {
     if (play.history[play.history.length - 1] == getAnswer(play.seed))
         return;
-    if (!arrowed.includes(play.guess)) {
+    if (!allowed.includes(play.guess)) {
         myAlert("not in word list");
         return;
     }
