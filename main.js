@@ -204,7 +204,16 @@ function enter() {
     play.letter_count += play.guess.length;
     play.history.push(play.guess);
     if (play.guess == play.answer) {
-        setTimeout(() => myAlert("excellent!"), 0);
+        if (play.history.length <= 1)
+            myAlert("miracle!");
+        else if (play.history.length <= 3)
+            myAlert("genius!");
+        else if (play.history.length <= 6)
+            myAlert("excellent!");
+        else if (play.history.length <= 10)
+            myAlert("great!");
+        else
+            myAlert("good!");
         stats.won++;
         stats.total_guess_count += play.history.length;
         stats.total_letter_count += play.letter_count;

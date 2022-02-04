@@ -139,10 +139,10 @@ function load() {
     const statsString = localStorage.getItem("diffle_stats");
     stats = statsString ? JSON.parse(statsString) : {} as StatsData;
 
-    if(stats.played == undefined) stats.played = 0;
-    if(stats.won == undefined) stats.won = 0;
-    if(stats.total_guess_count == undefined) stats.total_guess_count = 0;
-    if(stats.total_letter_count == undefined) stats.total_letter_count = 0;
+    if (stats.played == undefined) stats.played = 0;
+    if (stats.won == undefined) stats.won = 0;
+    if (stats.total_guess_count == undefined) stats.total_guess_count = 0;
+    if (stats.total_letter_count == undefined) stats.total_letter_count = 0;
 
     const playString = localStorage.getItem("diffle_play");
     const _play = playString ? JSON.parse(playString) as PlayData : null;
@@ -246,7 +246,11 @@ function enter() {
     play.history.push(play.guess);
 
     if (play.guess == play.answer) {
-        setTimeout(() => myAlert("excellent!"), 0);
+        if (play.history.length <= 1) myAlert("miracle!");
+        else if (play.history.length <= 3) myAlert("genius!");
+        else if (play.history.length <= 6) myAlert("excellent!");
+        else if (play.history.length <= 10) myAlert("great!");
+        else myAlert("good!");
         stats.won++;
         stats.total_guess_count += play.history.length;
         stats.total_letter_count += play.letter_count;
