@@ -80,9 +80,6 @@ function diffle(answer: string, guess: string): DiffleResult {
         }
     });
 
-    console.log(table);
-    console.log(best_path);
-
     return result;
 }
 
@@ -220,7 +217,6 @@ function inputLetter(letter: string) {
 
     play.guess += letter;
     save();
-    //console.log(guess);
 }
 function inputBackspace() {
     if (play.history[play.history.length - 1] == play.answer) return;
@@ -230,7 +226,6 @@ function inputBackspace() {
     if (play.guess == "")
         $inputRow.classList.add("empty");
 
-    console.log(play.guess);
     save();
 }
 
@@ -305,7 +300,6 @@ function share() {
 }
 
 document.addEventListener("keydown", (ev) => {
-    //console.log(ev.key);
     if (ev.key == "Backspace") inputBackspace();
     if (ev.key == "Enter") enter();
     if (/^[A-Za-z]$/.test(ev.key)) inputLetter(ev.key.toLowerCase());

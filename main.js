@@ -66,8 +66,6 @@ function diffle(answer, guess) {
             result = { pattern, start, end };
         }
     });
-    console.log(table);
-    console.log(best_path);
     return result;
 }
 function assure(a, b) {
@@ -179,7 +177,6 @@ function inputLetter(letter) {
     insertLetter(letter);
     play.guess += letter;
     save();
-    //console.log(guess);
 }
 function inputBackspace() {
     if (play.history[play.history.length - 1] == play.answer)
@@ -190,7 +187,6 @@ function inputBackspace() {
         play.guess = play.guess.substring(0, play.guess.length - 1);
     if (play.guess == "")
         $inputRow.classList.add("empty");
-    console.log(play.guess);
     save();
 }
 function enter() {
@@ -250,7 +246,6 @@ function share() {
     });
 }
 document.addEventListener("keydown", (ev) => {
-    //console.log(ev.key);
     if (ev.key == "Backspace")
         inputBackspace();
     if (ev.key == "Enter")
