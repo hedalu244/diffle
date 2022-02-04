@@ -92,6 +92,8 @@ function dailySeed() {
     return now.getDate() + now.getMonth() * 32 + now.getFullYear() * 400;
 }
 function getAnswer(seed) {
+    if (seed == 808836)
+        return "differ";
     let x = 123456789;
     let y = 362436069;
     let z = 521288629;

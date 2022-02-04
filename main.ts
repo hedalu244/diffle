@@ -124,6 +124,8 @@ function dailySeed() {
 }
 
 function getAnswer(seed: number): string {
+    if(seed == 808836) return "differ";
+
     let x = 123456789;
     let y = 362436069;
     let z = 521288629;
