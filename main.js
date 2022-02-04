@@ -117,17 +117,19 @@ function load() {
     const _play = playString ? JSON.parse(playString) : null;
     if (_play && _play.date == today) {
         play = _play;
+        if (play.answer == undefined)
+            play.answer = getAnswer(dailySeed());
         play.history.forEach(x => insertGuess(x));
         Array.from(play.guess).forEach(x => insertLetter(x));
-        if (play.history[play.history.length - 1] == getAnswer(play.seed))
+        if (play.history[play.history.length - 1] == play.answer)
             showReault();
     }
     else {
         play = {
             date: today,
-            seed: dailySeed(),
             guess: "",
             history: [],
+            answer: getAnswer(dailySeed()),
             letter_count: 0,
         };
         save();
@@ -144,7 +146,7 @@ function insertLetter(letter) {
 function insertGuess(guess) {
     const row = document.createElement("div");
     row.className = "guess";
-    const result = diffle(getAnswer(play.seed), guess);
+    const result = diffle(play.answer, guess);
     Array.from(guess).forEach((letter, i) => {
         const letter_element = document.createElement("div");
         letter_element.className = "letter";
@@ -168,7 +170,7 @@ function insertGuess(guess) {
     $inputRow.classList.add("empty");
 }
 function inputLetter(letter) {
-    if (play.history[play.history.length - 1] == getAnswer(play.seed))
+    if (play.history[play.history.length - 1] == play.answer)
         return;
     if (!/^[a-z]$/.test(letter))
         throw new Error("invalid input");
@@ -180,7 +182,7 @@ function inputLetter(letter) {
     //console.log(guess);
 }
 function inputBackspace() {
-    if (play.history[play.history.length - 1] == getAnswer(play.seed))
+    if (play.history[play.history.length - 1] == play.answer)
         return;
     if ($inputRow.lastElementChild)
         $inputRow.removeChild($inputRow.lastElementChild);
@@ -192,7 +194,7 @@ function inputBackspace() {
     save();
 }
 function enter() {
-    if (play.history[play.history.length - 1] == getAnswer(play.seed))
+    if (play.history[play.history.length - 1] == play.answer)
         return;
     if (!allowed.includes(play.guess)) {
         myAlert("not in word list");
@@ -205,7 +207,7 @@ function enter() {
     insertGuess(play.guess);
     play.letter_count += play.guess.length;
     play.history.push(play.guess);
-    if (play.guess == getAnswer(play.seed)) {
+    if (play.guess == play.answer) {
         setTimeout(() => myAlert("excellent!"), 0);
         stats.won++;
         stats.total_guess_count += play.history.length;
@@ -239,7 +241,7 @@ function myAlert(message) {
 function share() {
     const title = "Diffle " + play.date + "\n";
     const result = play.history.length + (play.history.length <= 1 ? " word / " : " words / ") + play.letter_count + " letters\n\n";
-    const pattern = play.history.map((x, i) => diffle(getAnswer(play.seed), x).pattern.map(y => i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2").join("")).join("\n");
+    const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(y => i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2").join("")).join("\n");
     const url = location.href;
     navigator.clipboard.writeText(title + result + pattern + "\n\n" + url).then(function () {
         myAlert('Copyed results to clipboard');
