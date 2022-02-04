@@ -41,7 +41,8 @@ function diffle(answer: string, guess: string): DiffleResult {
     table[answer.length][guess.length].paths.forEach(path => {
         const start = path[0] == ">";
         const end = path[path.length - 1] == ">";
-        const pattern: (0 | 1 | 2 | 3)[] = Array.from({ length: guess.length }, (x, i) => answer.indexOf(guess[i]) == -1 ? 0 : 1);
+        const pattern: (0 | 1 | 2 | 3)[] = Array.from({ length: guess.length }, x => 0);
+        const unused_letter: string[] = [];
 
         let accept_count = 0;
         let streak_length = 0;
@@ -62,6 +63,7 @@ function diffle(answer: string, guess: string): DiffleResult {
                     break;
                 case "+":
                     streak_length = 0;
+                    unused_letter.push(answer[a]);
                     a++;
                     break;
                 case "-":
@@ -70,8 +72,17 @@ function diffle(answer: string, guess: string): DiffleResult {
                     break;
             }
         }
-        if (accept_count == 1 && !start && !end)
+        if (accept_count == 1 && !start && !end) {
+            score -= pattern.indexOf(2) / pattern.length;
             pattern[pattern.indexOf(2)] = 1;
+        }
+
+        for (let i = 0; i < guess.length; i++) {
+            if (pattern[i] == 0 && unused_letter.indexOf(guess[i]) !== -1) {
+                pattern[i] = 1;
+                unused_letter.splice(unused_letter.indexOf(guess[i]), 1);
+            }
+        }
 
         if (best_score < score) {
             best_score = score;
