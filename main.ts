@@ -35,20 +35,20 @@ function diffle(answer: string, guess: string): DiffleResult {
     }
 
     let best_score = -Infinity;
-    let result: DiffleResult = { pattern: [], start: false, end: false };
-    let best_path;
+    let best_results: DiffleResult[] = [];
 
     table[answer.length][guess.length].paths.forEach(path => {
         const start = path[0] == ">";
         const end = path[path.length - 1] == ">";
         const pattern: (0 | 1 | 2 | 3)[] = Array.from({ length: guess.length }, x => 0);
-        const unused_letter: string[] = [];
+        const unused_letter: string[] = Array.from(answer); //　answerの中でまだ使ってない文字
 
         let accept_count = 0;
         let streak_length = 0;
         let score = 0;
         if (start) score += 1;
         if (end) score += 1;
+
 
         let a = 0, b = 0;
         for (let i = 0; i < path.length; i++) {
@@ -57,13 +57,13 @@ function diffle(answer: string, guess: string): DiffleResult {
                     accept_count++;
                     streak_length++;
                     pattern[b] = streak_length == 1 ? 2 : 3;
+                    unused_letter.splice(unused_letter.indexOf(guess[b]), 1);
                     score += 3 * streak_length;
                     a++;
                     b++;
                     break;
                 case "+":
                     streak_length = 0;
-                    unused_letter.push(answer[a]);
                     a++;
                     break;
                 case "-":
@@ -72,26 +72,29 @@ function diffle(answer: string, guess: string): DiffleResult {
                     break;
             }
         }
-        if (accept_count == 1 && !start && !end) {
-            score -= pattern.indexOf(2) / pattern.length;
-            pattern[pattern.indexOf(2)] = 1;
-        }
 
+        // 黄色を生成
         for (let i = 0; i < guess.length; i++) {
-            if (pattern[i] == 0 && unused_letter.indexOf(guess[i]) !== -1) {
+            if (pattern[i] == 0 && unused_letter.includes(guess[i])) {
                 pattern[i] = 1;
                 unused_letter.splice(unused_letter.indexOf(guess[i]), 1);
             }
         }
+        // 緑が一文字のとき黄色に変換
+        if (accept_count == 1 && !start && !end) {
+            pattern[pattern.indexOf(2)] = 1;
+        }
 
-        if (best_score < score) {
+        if (best_score == score) {
+            best_results.push({ pattern, start, end });
+        } else if (best_score < score) {
             best_score = score;
-            best_path = path;
-            result = { pattern, start, end };
+            best_results = [{ pattern, start, end }];
         }
     });
 
-    return result;
+    best_results.sort((a, b)=> a.pattern.join() < b.pattern.join() ? 1 : -1);
+    return best_results[0];
 }
 
 function assure<T extends new (...args: any[]) => any>(a: any, b: T): InstanceType<T> {
