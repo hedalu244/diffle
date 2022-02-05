@@ -93,7 +93,7 @@ function diffle(answer: string, guess: string): DiffleResult {
         }
     });
 
-    best_results.sort((a, b)=> a.pattern.join() < b.pattern.join() ? 1 : -1);
+    best_results.sort((a, b) => a.pattern.join() < b.pattern.join() ? 1 : -1);
     return best_results[0];
 }
 
@@ -127,7 +127,7 @@ function dailySeed() {
 }
 
 function getAnswer(seed: number): string {
-    if(seed == 808836) return "differ";
+    if (seed == 808836) return "differ";
 
     let x = 123456789;
     let y = 362436069;
@@ -206,9 +206,12 @@ function insertGuess(guess: string) {
         letter_element.classList.add(["absent", "present", "head", "tail"][result.pattern[i]]);
 
         const keyboard_button = assure(document.getElementById("keyboard_" + letter), HTMLButtonElement);
-        if (result.pattern[i] == 0)
+        if (result.pattern[i] == 0
+            && keyboard_button.className !== "present"
+            && keyboard_button.className !== "correct")
             keyboard_button.className = "absent";
-        if (result.pattern[i] == 1 && keyboard_button.className !== "correct")
+        if (result.pattern[i] == 1
+            && keyboard_button.className !== "correct")
             keyboard_button.className = "present";
         if (result.pattern[i] == 2 || result.pattern[i] == 3)
             keyboard_button.className = "correct";

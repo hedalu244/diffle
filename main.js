@@ -166,9 +166,12 @@ function insertGuess(guess) {
         letter_element.textContent = letter;
         letter_element.classList.add(["absent", "present", "head", "tail"][result.pattern[i]]);
         const keyboard_button = assure(document.getElementById("keyboard_" + letter), HTMLButtonElement);
-        if (result.pattern[i] == 0)
+        if (result.pattern[i] == 0
+            && keyboard_button.className !== "present"
+            && keyboard_button.className !== "correct")
             keyboard_button.className = "absent";
-        if (result.pattern[i] == 1 && keyboard_button.className !== "correct")
+        if (result.pattern[i] == 1
+            && keyboard_button.className !== "correct")
             keyboard_button.className = "present";
         if (result.pattern[i] == 2 || result.pattern[i] == 3)
             keyboard_button.className = "correct";
