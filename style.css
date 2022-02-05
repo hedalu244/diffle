@@ -211,6 +211,7 @@ h2 {
     cursor: pointer;
     user-select: none;
     background-color: #d3d6da;
+    color: #1a1a1b;
     border-radius: 0.4rem;
     margin: 0 0.3rem;
 }
