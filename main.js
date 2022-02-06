@@ -315,6 +315,15 @@ function shareImage() {
                 context.fill();
             }
         });
+        if (guess !== play.answer) {
+            result.pattern.forEach((color, j) => {
+                const center_x = width / 2 + (1 + 2 * j - guess.length) * (circle_radius + margin_x);
+                context.beginPath();
+                context.arc(center_x, center_y, dot_radius, 0, 360 * Math.PI / 180, false);
+                context.fillStyle = "#ffffff";
+                context.fill();
+            });
+        }
     });
     canvas.toBlob(blob => {
         try {
