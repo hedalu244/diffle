@@ -310,8 +310,8 @@ function myAlert(message: string) {
 function share() {
     const title = "Diffle " + play.date + "\n";
     const result = play.history.length + (play.history.length <= 1 ? " word / " : " words / ") + play.letter_count + " letters\n\n";
-    const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(y =>
-        i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
+    const pattern = play.history.map((x, i) => i == play.history.length - 1 ? "\u2705" : diffle(play.answer, x).pattern.map(y =>
+        y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
     ).join("")).join("\n");
     const url = location.href;
 
@@ -320,6 +320,83 @@ function share() {
     }).catch(function (error) {
         myAlert(error.message);
     });
+}
+
+function shareImage() {
+    const width = 500;
+    const circle_radius = 21;
+    const dot_radius = 4;
+    const margin_x = 2;
+    const margin_y = 10;
+    const header_height = 70;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = play.history.length * (circle_radius + margin_y) * 2 + header_height;
+    const context = assure(canvas.getContext("2d"), CanvasRenderingContext2D);
+
+
+    context.fillStyle = "#ffffff";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = "#1a1a1b";
+    context.font = "40px 'HK Super Round Bold'";
+    context.textAlign = "center";
+    context.fillText("Diffle".split("").join(String.fromCharCode(8202)), width / 2, 40);
+
+    context.font = "20px 'HK Super Round Bold'";
+    context.textAlign = "center";
+    context.fillText(play.date, width / 2, 65);
+
+    play.history.forEach((guess, i) => {
+        const center_y = (2 * i + 1) * (circle_radius + margin_y) + header_height;
+        const result = diffle(play.answer, guess);
+
+        if (result.start) {
+            context.fillStyle = "#55ad5e";
+            context.fillRect(0, center_y - circle_radius, width / 2 - guess.length * (circle_radius + margin_x) + circle_radius, circle_radius * 2);
+        }
+        if (result.end) {
+            context.fillStyle = "#55ad5e";
+            context.fillRect(width / 2 + guess.length * (circle_radius + margin_x) - circle_radius, center_y - circle_radius, width / 2 - guess.length * (circle_radius + margin_x) + circle_radius, circle_radius * 2);
+        }
+
+        result.pattern.forEach((color, j) => {
+            const center_x = width / 2 + (1 + 2 * j - guess.length) * (circle_radius + margin_x);
+
+            context.beginPath();
+            context.arc(center_x, center_y, circle_radius, 0, 360 * Math.PI / 180, false);
+            context.fillStyle = ["#787c7e", "#d4b02f", "#55ad5e", "#55ad5e"][color];
+            context.fill();
+
+            if (color == 3) {
+                context.fillStyle = "#55ad5e";
+                context.fillRect(center_x - (circle_radius + margin_x) * 2, center_y - circle_radius, (circle_radius + margin_x) * 2, circle_radius * 2);
+                context.fill();
+            }
+        });
+
+        if (guess !== play.answer) {
+            result.pattern.forEach((color, j) => {
+                const center_x = width / 2 + (1 + 2 * j - guess.length) * (circle_radius + margin_x);
+                context.beginPath();
+                context.arc(center_x, center_y, dot_radius, 0, 360 * Math.PI / 180, false);
+                context.fillStyle = "#ffffff";
+                context.fill();
+            });
+        }
+    });
+
+    canvas.toBlob(blob => {
+        try {
+            if (blob == null) {
+                throw new Error("something went wrong");
+            }
+            var fileURL = URL.createObjectURL(blob);
+            window.open(fileURL);
+        } catch (err) {
+            console.log(err);
+        }
+    }, "image/png");
 }
 
 document.addEventListener("keydown", (ev) => {
@@ -359,6 +436,7 @@ function updateTimer() {
 assure(document.getElementById("keyboard_enter"), HTMLButtonElement).addEventListener("click", enter);
 assure(document.getElementById("keyboard_backspace"), HTMLButtonElement).addEventListener("click", inputBackspace);
 assure(document.getElementById("share_button"), HTMLButtonElement).addEventListener("click", share);
+assure(document.getElementById("share_image_button"), HTMLButtonElement).addEventListener("click", shareImage);
 
 load();
 setInterval(updateTimer, 1000);
