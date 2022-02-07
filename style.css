@@ -179,7 +179,7 @@ h2 {
     z-index: -10;
     top: 0;
     bottom: 0;
-    left: -50rem;
+    left: -.2rem;
     right: 50%;
 }
 
@@ -191,7 +191,7 @@ h2 {
     z-index: -10;
     top: 0;
     bottom: 0;
-    right: -50rem;
+    right: -.2rem;
     left: 50%;
 }
 

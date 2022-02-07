@@ -351,13 +351,19 @@ function shareImage() {
         const center_y = (2 * i + 1) * (circle_radius + margin_y) + header_height;
         const result = diffle(play.answer, guess);
 
+        if (guess == play.answer) {
+            context.fillStyle = "#55ad5e";
+            context.fillRect(0, center_y - circle_radius, width, circle_radius * 2);
+            return;
+         }
+
         if (result.start) {
             context.fillStyle = "#55ad5e";
-            context.fillRect(0, center_y - circle_radius, width / 2 - guess.length * (circle_radius + margin_x) + circle_radius, circle_radius * 2);
+            context.fillRect(width / 2 - guess.length * (circle_radius + margin_x), center_y - circle_radius, circle_radius + margin_x, circle_radius * 2);
         }
         if (result.end) {
             context.fillStyle = "#55ad5e";
-            context.fillRect(width / 2 + guess.length * (circle_radius + margin_x) - circle_radius, center_y - circle_radius, width / 2 - guess.length * (circle_radius + margin_x) + circle_radius, circle_radius * 2);
+            context.fillRect(width / 2 + (guess.length - 1) * (circle_radius + margin_x), center_y - circle_radius, circle_radius + margin_x, circle_radius * 2);
         }
 
         result.pattern.forEach((color, j) => {
@@ -374,16 +380,6 @@ function shareImage() {
                 context.fill();
             }
         });
-
-        if (guess !== play.answer) {
-            result.pattern.forEach((color, j) => {
-                const center_x = width / 2 + (1 + 2 * j - guess.length) * (circle_radius + margin_x);
-                context.beginPath();
-                context.arc(center_x, center_y, dot_radius, 0, 360 * Math.PI / 180, false);
-                context.fillStyle = "#ffffff";
-                context.fill();
-            });
-        }
     });
 
     canvas.toBlob(blob => {
