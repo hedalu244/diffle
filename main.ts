@@ -1,5 +1,3 @@
-/// <reference path="data.ts">
-
 interface DiffleResult {
     pattern: (0 | 1 | 2 | 3)[],
     start: boolean,
@@ -159,6 +157,10 @@ function load() {
     if (stats.won == undefined) stats.won = 0;
     if (stats.total_guess_count == undefined) stats.total_guess_count = 0;
     if (stats.total_letter_count == undefined) stats.total_letter_count = 0;
+    
+    if (stats.played === 0) {
+        assure(document.getElementById("open_help"), HTMLInputElement).checked = true;
+    }
 
     const playString = localStorage.getItem("diffle_play");
     const _play = playString ? JSON.parse(playString) as PlayData : null;

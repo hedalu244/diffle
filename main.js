@@ -1,5 +1,4 @@
 "use strict";
-/// <reference path="data.ts">
 function diffle(answer, guess) {
     const table = Array.from({ length: answer.length + 1 }, () => Array.from({ length: guess.length + 1 }, () => ({ cost: 0, paths: [], })));
     table[0][0] = { cost: 0, paths: [[]] };
@@ -126,6 +125,9 @@ function load() {
         stats.total_guess_count = 0;
     if (stats.total_letter_count == undefined)
         stats.total_letter_count = 0;
+    if (stats.played === 0) {
+        assure(document.getElementById("open_help"), HTMLInputElement).checked = true;
+    }
     const playString = localStorage.getItem("diffle_play");
     const _play = playString ? JSON.parse(playString) : null;
     if (_play && _play.date == today) {
