@@ -354,17 +354,17 @@ function shareImage() {
         const result = diffle(play.answer, guess);
 
         if (guess == play.answer) {
-            context.fillStyle = "#55ad5e";
+            context.fillStyle = "#4fb061";
             context.fillRect(0, center_y - circle_radius, width, circle_radius * 2);
             return;
          }
 
         if (result.start) {
-            context.fillStyle = "#55ad5e";
+            context.fillStyle = "#4fb061";
             context.fillRect(width / 2 - guess.length * (circle_radius + margin_x), center_y - circle_radius, circle_radius + margin_x, circle_radius * 2);
         }
         if (result.end) {
-            context.fillStyle = "#55ad5e";
+            context.fillStyle = "#4fb061";
             context.fillRect(width / 2 + (guess.length - 1) * (circle_radius + margin_x), center_y - circle_radius, circle_radius + margin_x, circle_radius * 2);
         }
 
@@ -373,11 +373,11 @@ function shareImage() {
 
             context.beginPath();
             context.arc(center_x, center_y, circle_radius, 0, 360 * Math.PI / 180, false);
-            context.fillStyle = ["#787c7e", "#d4b02f", "#55ad5e", "#55ad5e"][color];
+            context.fillStyle = ["#959b9d", "#e8b838", "#4fb061", "#4fb061"][color];
             context.fill();
 
             if (color == 3) {
-                context.fillStyle = "#55ad5e";
+                context.fillStyle = "#4fb061";
                 context.fillRect(center_x - (circle_radius + margin_x) * 2, center_y - circle_radius, (circle_radius + margin_x) * 2, circle_radius * 2);
                 context.fill();
             }

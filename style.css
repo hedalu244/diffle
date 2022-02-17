@@ -49,7 +49,7 @@ header {
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid #d3d6da;
+    border-bottom: 1px solid #e2e4e4;
 }
 
 .title {
@@ -135,25 +135,25 @@ h2 {
 }
 
 .letter.absent {
-    background-color: #787c7e;
+    background-color: #959b9d;
     color: white;
     border: none;
 }
 
 .letter.present {
-    background-color: #d4b02f;
+    background-color: #e8b838;
     color: white;
     border: none;
 }
 
 .letter.head {
-    background-color: #55ad5e;
+    background-color: #4fb061;
     color: white;
     border: none;
 }
 
 .letter.tail {
-    background-color: #55ad5e;
+    background-color: #4fb061;
     color: white;
     border: none;
 }
@@ -162,7 +162,7 @@ h2 {
     content: "";
     display: block;
     position: absolute;
-    background-color: #55ad5e;
+    background-color: #4fb061;
     z-index: -10;
     top: 0;
     bottom: 0;
@@ -175,7 +175,7 @@ h2 {
     content: "";
     display: block;
     position: absolute;
-    background-color: #55ad5e;
+    background-color: #4fb061;
     z-index: -10;
     top: 0;
     bottom: 0;
@@ -187,7 +187,7 @@ h2 {
     content: "";
     display: block;
     position: absolute;
-    background-color: #55ad5e;
+    background-color: #4fb061;
     z-index: -10;
     top: 0;
     bottom: 0;
@@ -224,7 +224,7 @@ h2 {
     border: none;
     cursor: pointer;
     user-select: none;
-    background-color: #d3d6da;
+    background-color: #e2e4e4;
     color: #1a1a1b;
     border-radius: 0.4rem;
     margin: 0 0.3rem;
@@ -238,17 +238,17 @@ h2 {
 }
 
 #keyboard button.absent {
-    background-color: #787c7e;
+    background-color: #959b9d;
     color: white;
 }
 
 #keyboard button.present {
-    background-color: #d4b02f;
+    background-color: #e8b838;
     color: white;
 }
 
 #keyboard button.correct {
-    background-color: #55ad5e;
+    background-color: #4fb061;
     color: white;
 }
 
@@ -317,7 +317,7 @@ h2 {
 }
 
 #share_button, #share_image_button  {
-    background-color: #55ad5e;
+    background-color: #4fb061;
     color: white;
     font-family: inherit;
     font-weight: bold;
