@@ -161,7 +161,7 @@
   // src/share.ts
   function generateShareText(play) {
     const title = "Diffle " + play.date + "\n";
-    const result = play.history.length + (play.history.length <= 1 ? " word / " : " words / ") + play.letter_count + " letters\n\n";
+    const result = play.history.length + (play.history.length <= 1 ? " word / " : " words / ") + (play.letter_count - play.answer.length) + " letters except the answer\n\n";
     const pattern = play.history.map((x, i) => {
       if (i == play.history.length - 1) return "\u2705";
       return diffle(play.answer, x).pattern.map((y) => y == 0 ? "\u26AA" : y == 1 ? "\u{1F7E1}" : "\u{1F7E2}").join("");
