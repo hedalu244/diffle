@@ -1,8 +1,11 @@
 @font-face {
-    font-family: 'HK Super Round Bold';
-    font-style: normal;
-    font-weight: normal;
-    src: local('HK Super Round Bold'), url('HKSuperRound-Bold.woff') format('woff');
+    font-family: "HK Super Round Bold";
+    src: url("https://db.onlinewebfonts.com/t/59fd43bc8c25e76b8dc0e5aa036ebedc.eot");
+    src: url("https://db.onlinewebfonts.com/t/59fd43bc8c25e76b8dc0e5aa036ebedc.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/59fd43bc8c25e76b8dc0e5aa036ebedc.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/59fd43bc8c25e76b8dc0e5aa036ebedc.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/59fd43bc8c25e76b8dc0e5aa036ebedc.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/59fd43bc8c25e76b8dc0e5aa036ebedc.svg#HK Super Round Bold")format("svg");
 }
 
 html {
