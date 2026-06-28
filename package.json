@@ -1,0 +1,25 @@
+{
+  "name": "diffle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "esbuild src/main.ts --bundle --format=iife --target=es2021 --outfile=main.js",
+    "watch": "esbuild src/main.ts --bundle --format=iife --target=es2021 --outfile=main.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hedalu244/diffle.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/hedalu244/diffle/issues"
+  },
+  "homepage": "https://github.com/hedalu244/diffle#readme",
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  }
+}

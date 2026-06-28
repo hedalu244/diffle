@@ -1,3 +1,6 @@
+declare const answers: string[];
+declare const allowed: string[];
+
 interface DiffleResult {
     pattern: (0 | 1 | 2 | 3)[],
     start: boolean,
