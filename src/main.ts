@@ -1,5 +1,4 @@
-declare const answers: string[];
-declare const allowed: string[];
+import { answers, allowed } from "./words";
 
 interface DiffleResult {
     pattern: (0 | 1 | 2 | 3)[],
