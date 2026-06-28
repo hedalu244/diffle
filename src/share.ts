@@ -5,9 +5,10 @@ import { PlayData } from "./runtime";
 function generateShareText(play: PlayData): string {
     const title = "Diffle " + play.date + "\n";
     const result = play.history.length + (play.history.length <= 1 ? " word / " : " words / ") + play.letter_count + " letters\n\n";
-    const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(y =>
-        i == play.history.length - 1 ? "\ud83d\udfe9" : y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2"
-    ).join("")).join("\n");
+    const pattern = play.history.map((x, i) => {
+        if (i == play.history.length - 1) return "\u2705";
+        return diffle(play.answer, x).pattern.map(y => y == 0 ? "\u26AA" : y == 1 ? "\ud83d\udfe1" : "\ud83d\udfe2").join("");
+    }).join("\n");
     const url = location.href;
 
     return title + result + pattern + "\n\n" + url;
@@ -17,7 +18,7 @@ export function copyShareText(play: PlayData) {
     const shareText = generateShareText(play);
 
     navigator.clipboard.writeText(shareText).then(function () {
-        myAlert('Copyed results to clipboard');
+        myAlert('Copied results to clipboard');
     }).catch(function (error) {
         myAlert(error.message);
     });

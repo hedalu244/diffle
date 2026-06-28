@@ -162,16 +162,17 @@
   function generateShareText(play) {
     const title = "Diffle " + play.date + "\n";
     const result = play.history.length + (play.history.length <= 1 ? " word / " : " words / ") + play.letter_count + " letters\n\n";
-    const pattern = play.history.map((x, i) => diffle(play.answer, x).pattern.map(
-      (y) => i == play.history.length - 1 ? "\u{1F7E9}" : y == 0 ? "\u26AA" : y == 1 ? "\u{1F7E1}" : "\u{1F7E2}"
-    ).join("")).join("\n");
+    const pattern = play.history.map((x, i) => {
+      if (i == play.history.length - 1) return "\u2705";
+      return diffle(play.answer, x).pattern.map((y) => y == 0 ? "\u26AA" : y == 1 ? "\u{1F7E1}" : "\u{1F7E2}").join("");
+    }).join("\n");
     const url = location.href;
     return title + result + pattern + "\n\n" + url;
   }
   function copyShareText(play) {
     const shareText = generateShareText(play);
     navigator.clipboard.writeText(shareText).then(function() {
-      myAlert("Copyed results to clipboard");
+      myAlert("Copied results to clipboard");
     }).catch(function(error) {
       myAlert(error.message);
     });
