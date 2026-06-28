@@ -11,7 +11,7 @@ export function myAlert(message: string) {
 }
 
 export function showReault(play: PlayData) {
-    getElementById("input_row", HTMLDivElement).style.display = "none";
+    getElementById("guess", HTMLDivElement).style.display = "none";
     getElementById("result", HTMLDivElement).style.display = "";
     getElementById("timer_container", HTMLDivElement).style.display = "";
     getElementById("letters_used", HTMLDivElement).textContent = "" + play.letter_count;

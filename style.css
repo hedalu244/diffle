@@ -88,7 +88,7 @@ h2 {
     margin: 5rem 0 25rem 0;
 }
 
-#board {
+#history {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;

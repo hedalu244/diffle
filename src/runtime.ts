@@ -1,7 +1,7 @@
 import { allowed } from "./words";
 import { save, load } from "./storage";
 import { showReault, showStats, myAlert } from "./dom";
-import { clearInputRow, insertGuess, insertLetter, removeLetter, restore } from "./render";
+import * as render from "./render";
 
 export interface PlayData {
     date: string;
@@ -41,7 +41,7 @@ export class Runtime {
         this.play = play;
         this.stats = stats;
 
-        restore(play, stats);
+        render.restore(play, stats);
     }
 
     private solved() {
@@ -60,7 +60,7 @@ export class Runtime {
         if (!/^[a-z]$/.test(letter)) throw new Error("invalid input");
         if (10 <= this.play.guess.length) return;
 
-        insertLetter(letter);
+        render.insertLetter(letter);
 
         this.play.guess += letter;
         save(this.play, this.stats);
@@ -69,7 +69,7 @@ export class Runtime {
     inputBackspace() {
         if (isSolved(this.play)) return;
 
-        removeLetter();
+        render.removeLetter();
 
         if (this.play.guess !== "")
             this.play.guess = this.play.guess.substring(0, this.play.guess.length - 1);
@@ -89,8 +89,8 @@ export class Runtime {
             showStats(this.stats);
         }
 
-        insertGuess(this.play.guess, this.play.answer);
-        clearInputRow();
+        render.insertHistory(this.play.guess, this.play.answer);
+        render.clearGuess();
 
         this.play.letter_count += this.play.guess.length;
         this.play.history.push(this.play.guess);

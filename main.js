@@ -124,7 +124,7 @@
     setTimeout(() => alert.classList.remove("visible"), 1500);
   }
   function showReault(play) {
-    getElementById("input_row", HTMLDivElement).style.display = "none";
+    getElementById("guess", HTMLDivElement).style.display = "none";
     getElementById("result", HTMLDivElement).style.display = "";
     getElementById("timer_container", HTMLDivElement).style.display = "";
     getElementById("letters_used", HTMLDivElement).textContent = "" + play.letter_count;
@@ -331,7 +331,7 @@
 
   // src/render.ts
   function restore(play, stats) {
-    play.history.forEach((x) => insertGuess(x, play.answer));
+    play.history.forEach((x) => insertHistory(x, play.answer));
     Array.from(play.guess).forEach((x) => insertLetter(x));
     if (isSolved(play)) showReault(play);
     if (stats.played === 0) {
@@ -343,12 +343,12 @@
     const letter_element = document.createElement("div");
     letter_element.className = "letter";
     letter_element.textContent = letter;
-    $inputRow.appendChild(letter_element);
-    $inputRow.classList.remove("empty");
+    $guess.appendChild(letter_element);
+    $guess.classList.remove("empty");
   }
   function removeLetter() {
-    if ($inputRow.lastElementChild) $inputRow.removeChild($inputRow.lastElementChild);
-    if ($inputRow.childElementCount == 0) $inputRow.classList.add("empty");
+    if ($guess.lastElementChild) $guess.removeChild($guess.lastElementChild);
+    if ($guess.childElementCount == 0) $guess.classList.add("empty");
   }
   function updateKeyboard(letter, result) {
     const keyboard_button = getElementById("keyboard_" + letter, HTMLButtonElement);
@@ -359,7 +359,7 @@
     if (result == 2 || result == 3)
       keyboard_button.className = "correct";
   }
-  function insertGuess(guess, answer) {
+  function insertHistory(guess, answer) {
     const row = document.createElement("div");
     row.className = "guess";
     const result = diffle(answer, guess);
@@ -373,13 +373,13 @@
       if (i == guess.length - 1 && result.end) letter_element.classList.add("end");
       row.appendChild(letter_element);
     });
-    $board.insertBefore(row, $inputRow);
+    $history.insertBefore(row, $guess);
   }
-  function clearInputRow() {
-    $inputRow.innerHTML = "";
-    $inputRow.classList.add("empty");
+  function clearGuess() {
+    $guess.innerHTML = "";
+    $guess.classList.add("empty");
   }
-  var $inputRow, $board;
+  var $guess, $history;
   var init_render = __esm({
     "src/render.ts"() {
       "use strict";
@@ -387,8 +387,8 @@
       init_dom();
       init_utils();
       init_runtime();
-      $inputRow = getElementById("input_row", HTMLDivElement);
-      $board = getElementById("board", HTMLDivElement);
+      $guess = getElementById("guess", HTMLDivElement);
+      $history = getElementById("history", HTMLDivElement);
     }
   });
 
@@ -453,8 +453,8 @@
             this.stats.played++;
             showStats(this.stats);
           }
-          insertGuess(this.play.guess, this.play.answer);
-          clearInputRow();
+          insertHistory(this.play.guess, this.play.answer);
+          clearGuess();
           this.play.letter_count += this.play.guess.length;
           this.play.history.push(this.play.guess);
           this.play.guess = "";

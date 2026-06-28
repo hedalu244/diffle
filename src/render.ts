@@ -4,11 +4,11 @@ import { PlayData, StatsData } from "./runtime";
 import { getElementById } from "./utils";
 import { isSolved } from "./runtime";
 
-const $inputRow = getElementById("input_row", HTMLDivElement);
-const $board = getElementById("board", HTMLDivElement);
+const $guess = getElementById("guess", HTMLDivElement);
+const $history = getElementById("history", HTMLDivElement);
 
 export function restore(play: PlayData, stats: StatsData) {
-    play.history.forEach(x => insertGuess(x, play.answer));
+    play.history.forEach(x => insertHistory(x, play.answer));
     
     Array.from(play.guess).forEach(x => insertLetter(x));
 
@@ -29,13 +29,13 @@ export function insertLetter(letter: string) {
     const letter_element = document.createElement("div");
     letter_element.className = "letter";
     letter_element.textContent = letter;
-    $inputRow.appendChild(letter_element);
-    $inputRow.classList.remove("empty");
+    $guess.appendChild(letter_element);
+    $guess.classList.remove("empty");
 }
 
 export function removeLetter() {
-    if ($inputRow.lastElementChild) $inputRow.removeChild($inputRow.lastElementChild);
-    if ($inputRow.childElementCount == 0) $inputRow.classList.add("empty");
+    if ($guess.lastElementChild) $guess.removeChild($guess.lastElementChild);
+    if ($guess.childElementCount == 0) $guess.classList.add("empty");
 }
 
 function updateKeyboard(letter: string, result: 0 | 1 | 2 | 3) {
@@ -51,7 +51,7 @@ function updateKeyboard(letter: string, result: 0 | 1 | 2 | 3) {
         keyboard_button.className = "correct";
 }
 
-export function insertGuess(guess: string, answer: string) {
+export function insertHistory(guess: string, answer: string) {
     const row = document.createElement("div");
     row.className = "guess";
 
@@ -70,10 +70,10 @@ export function insertGuess(guess: string, answer: string) {
 
         row.appendChild(letter_element);
     });
-    $board.insertBefore(row, $inputRow);
+    $history.insertBefore(row, $guess);
 }
 
-export function clearInputRow() {
-    $inputRow.innerHTML = "";
-    $inputRow.classList.add("empty");
+export function clearGuess() {
+    $guess.innerHTML = "";
+    $guess.classList.add("empty");
 }
