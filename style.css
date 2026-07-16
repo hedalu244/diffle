@@ -55,6 +55,13 @@ header {
     border-bottom: 1px solid #e2e4e4;
 }
 
+footer {
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    font-size: 0.9em;
+}
+
 .title {
     position:fixed;
     top: 0;
