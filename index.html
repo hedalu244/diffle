@@ -3,248 +3,27 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Diffle</title>
     <meta name="description"
         content="Another Wordle spin-off game! Guess word of variable length. Each guess, hint tells the order the letters used">
-    <link rel="stylesheet" href="style.css">
+
+    <!--
+    Diffle has moved to diffle.com.
+    The script must stay ABOVE the meta-refresh: it runs first and carries
+    the player's saved stats to the new site; the meta-refresh is the
+    no-JS/crawler fallback.
+    -->
+    <link rel="canonical" href="https://diffle.com/">
+    <script src="migrate-transfer.js"></script>
+    <meta http-equiv="refresh" content="0; url=https://diffle.com/">
+
     <link rel="icon" href="favicon.ico">
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GKFPBRJWM2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-GKFPBRJWM2');
-</script>
 </head>
 
 <body>
-    <div class="wrapper">
-        <header class="title">
-            <h1>DIFFLE</h1>
-            <label for="open_help" style="position: absolute; left: 1rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path fill="#878a8c"
-                        d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z">
-                    </path>
-                </svg>
-            </label>
-            <label for="open_stats" style="position: absolute; right: 1rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <path fill="#878a8c"
-                        d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"></path>
-                </svg>
-            </label>
-        </header>
-        <div id="game">
-            <div id="history">
-                <div id="guess" class="guess empty"></div>
-            </div>
-            <div id="result" style="display: none;">
-                <div
-                    style="display: flex; flex-flow: row; justify-content: space-around; align-items: flex-end;  margin-bottom: 2rem;">
-                    <div class="result_count">
-                        <div id="words_used"></div>
-                        <div><span class="result_count_label" id="words_used_label">Words<br>Used</span></div>
-                    </div>
-                    <div class="slash"></div>
-                    <div class="result_count">
-                        <div id="letters_used"></div>
-                        <div><span class="result_count_label">Letters<br>Used</span></div>
-                    </div>
-                </div>
-                <div class="share">
-                    <button id="share_button">
-                        Share
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                            <path fill="white"
-                                d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z">
-                            </path>
-                        </svg>
-                    </button>
-                    <button id="share_image_button">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                            <path fill="white"
-                                d="M 3,2.2 C 2.4,2.2 2.2,2.4 2.2,3 v 18 c 0,0.4 0.4,0.8 0.8,0.8 6.3390531,0.0035 12.771724,0 18.2,0 0.4,0 0.805043,-0.4 0.8,-0.803858 V 3 C 22,2.6 21.6,2.2 21.2,2.2 Z m 0.8,1.6 h 16.6 l 0,7.2 c 0,0 -1.661821,-1.6523545 -2,-2 -0.338179,-0.3476455 -0.857547,-0.3238834 -1.2,0 -0.342453,0.3238834 -5.985156,6.080078 -5.985156,6.080078 L 9,13 C 8.6837695,12.684374 8.1162305,12.684374 7.8,13 l -4,4 z m 4,1.4 c -1.4429284,0 -2.6,1.1547756 -2.6,2.6 0,1.4452243 1.1570716,2.6 2.6,2.6 1.4429285,0 2.6,-1.1547757 2.6,-2.6 0,-1.4452244 -1.1570715,-2.6 -2.6,-2.6 z m 0,1.6 c 0.6,0 1,0.4 1,1 0,0.6 -0.4,1 -1,1 -0.6,0 -1,-0.4 -1,-1 0,-0.6 0.4,-1 1,-1 z m 10,4 2.6,2.6 0,6.8 H 3.8 l 0,-1 4.6,-4.6 2.2,2.2 c 0.31623,0.315626 0.88377,0.315626 1.2,0 z">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div id="keyboard">
-            <div>
-                <button id="keyboard_q">Q</button>
-                <button id="keyboard_w">W</button>
-                <button id="keyboard_e">E</button>
-                <button id="keyboard_r">R</button>
-                <button id="keyboard_t">T</button>
-                <button id="keyboard_y">Y</button>
-                <button id="keyboard_u">U</button>
-                <button id="keyboard_i">I</button>
-                <button id="keyboard_o">O</button>
-                <button id="keyboard_p">P</button>
-            </div>
-            <div>
-                <span class="spacer"></span>
-                <button id="keyboard_a">A</button>
-                <button id="keyboard_s">S</button>
-                <button id="keyboard_d">D</button>
-                <button id="keyboard_f">F</button>
-                <button id="keyboard_g">G</button>
-                <button id="keyboard_h">H</button>
-                <button id="keyboard_j">J</button>
-                <button id="keyboard_k">K</button>
-                <button id="keyboard_l">L</button>
-                <span class="spacer"></span>
-            </div>
-            <div>
-                <button id="keyboard_enter">Enter</button>
-                <button id="keyboard_z">Z</button>
-                <button id="keyboard_x">X</button>
-                <button id="keyboard_c">C</button>
-                <button id="keyboard_v">V</button>
-                <button id="keyboard_b">B</button>
-                <button id="keyboard_n">N</button>
-                <button id="keyboard_m">M</button>
-                <button id="keyboard_backspace">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                        <path fill="#1a1a1b"
-                            d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H7.07L2.4 12l4.66-7H22v14zm-11.59-2L14 13.41 17.59 17 19 15.59 15.41 12 19 8.41 17.59 7 14 10.59 10.41 7 9 8.41 12.59 12 9 15.59z">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <input type="radio" name="open_close_help" id="close_help" style="display: none" checked>
-        <input type="radio" name="open_close_help" id="open_help" style="display: none">
-        <div id="help">
-            <header>
-                <h2>How To Play</h2>
-                <label for="close_help" style="position: absolute; right: 1rem;">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                        <path fill="#878a8c"
-                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                        </path>
-                    </svg>
-                </label>
-            </header>
-
-            <p>This game is inspired by <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a>.</p>
-
-            <p>Guess the word using as few letters as possible.</p>
-
-            <p>Each guess must be a valid word. Hit the enter button to submit.</p>
-
-            <p>After each guess, the color of the tiles will change to show how close your guess was to the word.
-            </p>
-
-
-            <h2>Examples</h2>
-            <div class="example">
-                <div class="guess">
-                    <div class="letter absent">s</div>
-                    <div class="letter absent">h</div>
-                    <div class="letter absent">i</div>
-                    <div class="letter absent">r</div>
-                    <div class="letter absent">t</div>
-                </div>
-                <p>Gray letters are not in the word.</p>
-            </div>
-            <div class="example">
-                <div class="guess">
-                    <div class="letter present">p</div>
-                    <div class="letter head">e</div>
-                    <div class="letter absent">d</div>
-                    <div class="letter head">a</div>
-                    <div class="letter head">l</div>
-                </div>
-                <p>The letters E, A, and L are in the word <strong>in this order</strong>.</p>
-                <p>The letter P is in the word but not before the E.</p>
-            </div>
-            <div class="example">
-                <div class="guess">
-                    <div class="letter absent">i</div>
-                    <div class="letter head">m</div>
-                    <div class="letter tail">p</div>
-                    <div class="letter tail">l</div>
-                    <div class="letter absent">y</div>
-                </div>
-                <p>The letter MPL is in the word <strong>in a row</strong>.</p>
-            </div>
-            <div class="example">
-                <div class="guess">
-                    <div class="letter head start">e</div>
-                    <div class="letter absent">d</div>
-                    <div class="letter absent">i</div>
-                    <div class="letter absent">b</div>
-                    <div class="letter head">l</div>
-                    <div class="letter tail end">e</div>
-                </div>
-                <p>The word starts with E and ends with LE.</p>
-            </div>
-            <div class="example">
-                <div class="guess">
-                    <div class="letter head start">e</div>
-                    <div class="letter tail">x</div>
-                    <div class="letter tail">a</div>
-                    <div class="letter tail">m</div>
-                    <div class="letter tail">p</div>
-                    <div class="letter tail">l</div>
-                    <div class="letter tail end">e</div>
-                </div>
-                <p>This is the answer word.</p>
-            </div>
-            <footer>
-                <div>Made by <a href="https://github.com/hedalu244">hedalu244</a></div>
-                <div>Fonts made from <a href="http://www.onlinewebfonts.com">Web Fonts</a> is licensed by CC BY 4.0</div>
-            </footer>
-        </div>
-        <input type="radio" name="open_close_stats" id="close_stats" style="display: none" checked>
-        <input type="radio" name="open_close_stats" id="open_stats" style="display: none">
-        <div id="stats">
-            <header>
-                <h2>Statistics</h2>
-                <label for="close_stats" style="position: absolute; right: 1rem;">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                        <path fill="#878a8c"
-                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                        </path>
-                    </svg>
-                </label>
-            </header>
-
-            <div class="stats_container">
-                <div class="stats">
-                    <div class="stats_number" id="stats_played"></div>
-                    <div class="stats_label">Played</div>
-                </div>
-                <div class="stats">
-                    <div class="stats_number" id="stats_won"></div>
-                    <div class="stats_label">Won</div>
-                </div>
-                <div class="stats">
-                    <div class="stats_number" id="stats_average_words"></div>
-                    <div><span class="stats_label">Average<br>Words</span></div>
-                </div>
-                <div class="stats">
-                    <div class="stats_number" id="stats_average_letters"></div>
-                    <div><span class="stats_label">Average<br>Letters</span></div>
-                </div>
-            </div>
-            <div id="timer_container" class="timer" style="display: none;">
-                <h2>Next DIFFLE</h2>
-                <div id="timer"></div>
-            </div>
-        </div>
-    </div>
-    <div id="alert">not in word list</div>
-    <script src="main.js"></script>
+    <p>Diffle has moved to <a href="https://diffle.com/">diffle.com</a>.</p>
 </body>
 
 </html>
